@@ -1,6 +1,6 @@
 // alert('Hello from app.js');
 
-// Array of user objects
+// Users Lists
 const users = [
   {
     user: "Leo",
@@ -12,18 +12,29 @@ const users = [
   },
 ];
 
+// User Constructor
 let User = function (user, balance) {
   this.user = user;
   this.balance = balance;
 };
 
-// create user
+// Create new user
 function createUser(user, balance = 0) {
   let newUser = new User(user, balance);
 
-  users.push(newUser);
+  if (ifUserExist(user)) {
+    console.log("User already exists.");
+  } else {
+    users.push(newUser);
+    console.log("New user added.");
+  }
+
+  users.forEach((user) => {
+    console.log(`User: ${user.user}, Balance: ${user.balance}`);
+  });
 }
 
+// Check if user exists
 function ifUserExist(user) {
   if (users.length) {
     let i = 0;
