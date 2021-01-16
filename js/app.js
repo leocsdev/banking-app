@@ -12,7 +12,6 @@ const users = [
   },
 ];
 
-// User
 let User = function (user, balance) {
   this.user = user;
   this.balance = balance;
