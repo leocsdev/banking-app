@@ -72,6 +72,8 @@ function deposit(user, amount) {
           console.log(
             `New balance for ${users[i].user} is ${users[i].balance}`
           );
+
+          return users[i].balance;
         }
       }
     } else {
@@ -94,18 +96,31 @@ function withdraw(user, amount) {
         // console.log(users[i].user);
         if (
           users[i].user.toUpperCase() == user.toUpperCase() &&
-          users[i].balance > amount
+          users[i].balance >= amount
         ) {
           // console.log(users[i].user);
           users[i].balance -= amount;
           console.log(
             `New balance for ${users[i].user} is ${users[i].balance}`
           );
+          return users[i].balance;
         }
       }
     } else {
       // If user not found, show message -> 'User does not exist.'
       console.log("User does not exist.");
     }
+  }
+}
+
+function send(from, to, amount) {
+  // check both users if existing
+  if (userExist(from) && userExist(to) && amount <= 0) {
+    // get the withdrawn amount and save the value to withdrawFrom
+    let withdrawFrom = withdraw(from, amount);
+    // deposit the withdrawn amount to the intended user
+    deposit(to, withdrawFrom);
+  } else {
+    console.log(`One of the parameters are invalid.`);
   }
 }
