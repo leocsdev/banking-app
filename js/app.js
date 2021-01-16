@@ -40,7 +40,7 @@ function userExist(user) {
     let i = 0;
 
     users.forEach((element) => {
-      if (user == element.user) {
+      if (user.toUpperCase() == element.user.toUpperCase()) {
         i++;
       }
     });
@@ -64,12 +64,40 @@ function deposit(user, amount) {
     // Get user information from users array
     if (userExist(user)) {
       // Once user is found, add the amount to the balance AND RETURN new balance
-
       for (let i = 0; i < users.length; i++) {
         // console.log(users[i].user);
-        if (users[i].user == user) {
+        if (users[i].user.toUpperCase() == user.toUpperCase()) {
           // console.log(users[i].user);
           users[i].balance += amount;
+          console.log(
+            `New balance for ${users[i].user} is ${users[i].balance}`
+          );
+        }
+      }
+    } else {
+      // If user not found, show message -> 'User does not exist.'
+      console.log("User does not exist.");
+    }
+  }
+}
+
+function withdraw(user, amount) {
+  // Try to make the amount as accurate as possible (search for floating points)
+  // check if amount is a valid number, CANNOT BE NEGATIVE NUMBER
+  if (amount <= 0) {
+    console.log("Please enter valid amount.");
+  } else {
+    // Get user information from users array
+    if (userExist(user)) {
+      // Once user is found, add the amount to the balance AND RETURN new balance
+      for (let i = 0; i < users.length; i++) {
+        // console.log(users[i].user);
+        if (
+          users[i].user.toUpperCase() == user.toUpperCase() &&
+          users[i].balance > amount
+        ) {
+          // console.log(users[i].user);
+          users[i].balance -= amount;
           console.log(
             `New balance for ${users[i].user} is ${users[i].balance}`
           );
