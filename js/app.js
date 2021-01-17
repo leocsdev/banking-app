@@ -96,16 +96,18 @@ function withdraw(user, amount) {
     // Once user is found, add the amount to the balance AND RETURN new balance
     for (let i = 0; i < users.length; i++) {
       // console.log(users[i].user);
-      if (
-        users[i].user.toUpperCase() == user.toUpperCase() &&
-        users[i].balance >= amount
-      ) {
+      if (users[i].user.toUpperCase() == user.toUpperCase()) {
         // check balance if enough to make a withdrawal
-        users[i].balance -= amount;
-        console.log(`New balance for ${users[i].user} is ${users[i].balance}`);
-        return users[i].balance;
-      } else {
-        console.log("Not enough balance.");
+        // console.log(users.toUpperCase().balance);
+        if (users[i].balance < amount) {
+          console.log("Sorry, balance insufficient");
+        } else {
+          users[i].balance -= amount;
+          console.log(
+            `New balance for ${users[i].user} is ${users[i].balance}`
+          );
+          return users[i].balance;
+        }
       }
     }
   } else {
