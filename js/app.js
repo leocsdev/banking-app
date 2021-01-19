@@ -59,7 +59,7 @@ function createUser(user, balance = 0) {
   }
 }
 
-function getBalance(user) {
+function getBalance(user = "") {
   // Check if user exists
   if (userExist(user)) {
     for (let i = 0; i < users.length; i++) {
@@ -72,7 +72,7 @@ function getBalance(user) {
   }
 }
 
-function deposit(user, amount = 0) {
+function deposit(user = "", amount = 0) {
   // Check if user exists
   if (userExist(user)) {
     // Check if amount is a number
@@ -98,7 +98,7 @@ function deposit(user, amount = 0) {
   }
 }
 
-function withdraw(user, amount = 0) {
+function withdraw(user = "", amount = 0) {
   // Check if user exists
   if (userExist(user)) {
     // Check if amount is a number
@@ -130,28 +130,31 @@ function withdraw(user, amount = 0) {
   }
 }
 
-function send(from, to, amount) {
-  // check both users if existing
-  if (userExist(from) && userExist(to) && amount > 0) {
-    // check balance from user
-    if (getBalance(from) >= amount) {
-      let balanceFrom = withdraw(from, amount);
-      let balanceTo = deposit(to, amount);
-      return `Balance of ${from} is ${balanceFormatter(
-        balanceFrom
-      )}, balance of ${to} is ${balanceFormatter(balanceTo)}`;
+function send(from = "", to = "", amount = 0) {
+  if (userExist(from)) {
+    if (userExist(to)) {
+      if (numbersOnly(amount)) {
+        if (amount >= 0) {
+          if (getBalance(from) >= amount) {
+            let balanceFrom = withdraw(from, amount);
+            let balanceTo = deposit(to, amount);
+            return `Balance for ${from} is ${balanceFormatter(
+              balanceFrom
+            )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
+          } else {
+            return `Balance for ${from} is insufficient.`;
+          }
+        } else {
+          return `Amount cannot be negative.`;
+        }
+      } else {
+        return `Only numbers are allowed in amount.`;
+      }
     } else {
-      return `Balance from ${from} is insufficient.`;
+      return `Receiver does not exists.`;
     }
-
-    // get the withdrawn amount and save the value to withdrawFrom
-    // let withdrawFrom = withdraw(from, amount);
-    // console.log(withdrawFrom);
-    // deposit the withdrawn amount to the intended user
-    // deposit(to, withdrawFrom);
   } else {
-    // console.log(`One of the parameters are invalid.`);
-    return "One of the parameters are invalid.";
+    return `Sender does not exists.`;
   }
 }
 
