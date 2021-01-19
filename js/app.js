@@ -130,31 +130,59 @@ function withdraw(user = "", amount = 0) {
   }
 }
 
+// function send(from = "", to = "", amount = 0) {
+//   if (userExist(from)) {
+//     if (userExist(to)) {
+//       if (numbersOnly(amount)) {
+//         if (amount >= 0) {
+//           if (getBalance(from) >= amount) {
+//             let balanceFrom = withdraw(from, amount);
+//             let balanceTo = deposit(to, amount);
+//             return `Balance for ${from} is ${balanceFormatter(
+//               balanceFrom
+//             )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
+//           } else {
+//             return `Balance for ${from} is insufficient.`;
+//           }
+//         } else {
+//           return `Amount cannot be negative.`;
+//         }
+//       } else {
+//         return `Only numbers are allowed in amount.`;
+//       }
+//     } else {
+//       return `Receiver does not exists.`;
+//     }
+//   } else {
+//     return `Sender does not exists.`;
+//   }
+// }
+
 function send(from = "", to = "", amount = 0) {
-  if (userExist(from)) {
-    if (userExist(to)) {
-      if (numbersOnly(amount)) {
-        if (amount >= 0) {
-          if (getBalance(from) >= amount) {
-            let balanceFrom = withdraw(from, amount);
-            let balanceTo = deposit(to, amount);
-            return `Balance for ${from} is ${balanceFormatter(
-              balanceFrom
-            )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
-          } else {
-            return `Balance for ${from} is insufficient.`;
-          }
-        } else {
-          return `Amount cannot be negative.`;
-        }
-      } else {
-        return `Only numbers are allowed in amount.`;
-      }
+  if (!userExist(from)) {
+    return `Sender does not exists`;
+  }
+
+  if (!userExist(to)) {
+    return `Receiver does not exists`;
+  }
+
+  if (!numbersOnly(amount)) {
+    return `Only numbers are allowed in amount.`;
+  }
+
+  if (amount >= 0) {
+    if (getBalance(from) >= amount) {
+      let balanceFrom = withdraw(from, amount);
+      let balanceTo = deposit(to, amount);
+      return `Balance for ${from} is ${balanceFormatter(
+        balanceFrom
+      )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
     } else {
-      return `Receiver does not exists.`;
+      return `Balance for ${from} is insufficient.`;
     }
   } else {
-    return `Sender does not exists.`;
+    return `Amount cannot be negative.`;
   }
 }
 
