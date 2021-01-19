@@ -67,7 +67,9 @@ function deposit(user = "", amount = 0) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         users[i].balance += amount;
         console.log(
-          `New balance for ${users[i].user} is ${users[i].balance} after deposit.`
+          `New balance for ${users[i].user} is ${balanceFormatter(
+            users[i].balance
+          )} after deposit.`
         );
         return users[i].balance;
       }
@@ -93,7 +95,9 @@ function withdraw(user = "", amount = 0) {
         if (users[i].balance > amount) {
           users[i].balance -= amount;
           console.log(
-            `New balance for ${users[i].user} is ${users[i].balance} after withdrawal.`
+            `New balance for ${users[i].user} is ${balanceFormatter(
+              users[i].balance
+            )} after withdrawal.`
           );
           return users[i].balance;
         } else {
