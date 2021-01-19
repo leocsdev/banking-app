@@ -66,7 +66,7 @@ function getBalance(user) {
       }
     }
   } else {
-    return "No user found.";
+    return "User does not exist.";
   }
 }
 
