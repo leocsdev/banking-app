@@ -32,24 +32,18 @@ let User = function (user, balance) {
 
 // Create new user
 function createUser(user, balance = 0) {
+  // If new user
   if (!userExist(user)) {
-    // Allow letters only in user
-    let allowedLetters = /^[A-Za-z]+$/;
-
-    if (user.match(allowedLetters)) {
-      // Allow numbers only in amount
-      let allowedNumbers = /^[0-9-.]+$/;
-
-      // convert balance to string
-      balanceStr = balance.toString();
-
-      if (balanceStr.match(allowedNumbers)) {
+    // Check if new user contains letters only
+    if (lettersOnly(user)) {
+      // Allow numbers only in balance
+      if (numbersOnly(balance)) {
         // Allow 0 and positive number only in balance
         if (balance >= 0) {
           let newUser = new User(user, balance);
           users.push(newUser);
 
-          return `New user added.`;
+          return `User ${user} added.`;
         } else {
           return `Amount cannot be negative.`;
         }
@@ -64,24 +58,15 @@ function createUser(user, balance = 0) {
   }
 }
 
-// Check if user exists
-function userExist(user) {
-  if (users.length) {
-    let i = 0;
-
-    users.forEach((element) => {
-      if (user.toUpperCase() == element.user.toUpperCase()) {
-        i++;
+function getBalance(user) {
+  if (userExist(user)) {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].user.toUpperCase() == user.toUpperCase()) {
+        return users[i].balance;
       }
-    });
-
-    if (i > 0) {
-      return true;
-    } else {
-      return false;
     }
   } else {
-    return false;
+    return "No user found.";
   }
 }
 
@@ -148,18 +133,6 @@ function withdraw(user, amount) {
   }
 }
 
-function getBalance(user) {
-  if (userExist(user)) {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].user.toUpperCase() == user.toUpperCase()) {
-        return users[i].balance;
-      }
-    }
-  } else {
-    return "No user found.";
-  }
-}
-
 function send(from, to, amount) {
   // check both users if existing
   if (userExist(from) && userExist(to) && amount > 0) {
@@ -182,6 +155,61 @@ function send(from, to, amount) {
   } else {
     // console.log(`One of the parameters are invalid.`);
     return "One of the parameters are invalid.";
+  }
+}
+
+// Utility Functions
+// Check if user exists
+function userExist(user) {
+  // Check if user contains only letters
+  if (lettersOnly(user)) {
+    // if users array is not empty
+    if (users.length) {
+      let i = 0;
+
+      users.forEach((element) => {
+        if (user.toLowerCase() == element.user.toLowerCase()) {
+          i++;
+        }
+      });
+
+      if (i > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+function lettersOnly(word) {
+  // Allow letters only
+  let allowedLetters = /^[A-Za-z]+$/;
+
+  let wordStr = word.toString();
+
+  if (wordStr.match(allowedLetters)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function numbersOnly(number) {
+  // Allow numbers and one dot only
+  let allowedNumbers = /^(\-)?\d+(\.\d+)?$/;
+
+  // Convert number to string
+  let numberStr = number.toString();
+
+  if (numberStr.match(allowedNumbers)) {
+    return true;
+  } else {
+    return false;
   }
 }
 
