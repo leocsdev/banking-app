@@ -1,19 +1,24 @@
 // Users Lists
 const users = [
-  {
-    user: "Leo",
-    balance: 0,
-  },
-  {
-    user: "Elijah",
-    balance: 100,
-  },
+  // {
+  //   user: "Leo",
+  //   balance: 0,
+  // },
+  // {
+  //   user: "Elijah",
+  //   balance: 100,
+  // },
 ];
 
 function listUsers() {
+  if (!users.length) {
+    return `No users exist.`;
+  }
+
   users.forEach((user) => {
-    console.log(`${user.user}, ${user.balance}`);
-    // return user.user;
+    console.log(
+      `User: ${user.user}, Balance: ${balanceFormatter(user.balance)}`
+    );
   });
 }
 
