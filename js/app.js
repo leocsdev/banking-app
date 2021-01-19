@@ -1,5 +1,10 @@
 // alert('Hello from app.js');
 
+// -------------------------------------------------------
+// TEST AREA
+
+// -------------------------------------------------------
+
 // Users Lists
 const users = [
   {
@@ -14,16 +19,10 @@ const users = [
 
 function listUsers() {
   users.forEach((user) => {
-    console.log(user.user);
+    console.log(`${user.user}, ${user.balance}`);
     // return user.user;
   });
 }
-
-// function listUsers() {
-//   for (user of users) {
-//     return Object.values(user);
-//   }
-// }
 
 // User Constructor
 let User = function (user, balance) {
@@ -33,18 +32,36 @@ let User = function (user, balance) {
 
 // Create new user
 function createUser(user, balance = 0) {
-  let newUser = new User(user, balance);
+  if (!userExist(user)) {
+    // Allow letters only in user
+    let allowedLetters = /^[A-Za-z]+$/;
 
-  if (userExist(user)) {
-    console.log("User already exists.");
+    if (user.match(allowedLetters)) {
+      // Allow numbers only in amount
+      let allowedNumbers = /^[0-9-.]+$/;
+
+      // convert balance to string
+      balanceStr = balance.toString();
+
+      if (balanceStr.match(allowedNumbers)) {
+        // Allow 0 and positive number only in balance
+        if (balance >= 0) {
+          let newUser = new User(user, balance);
+          users.push(newUser);
+
+          return `New user added.`;
+        } else {
+          return `Amount cannot be negative.`;
+        }
+      } else {
+        return `Only numbers are allowed in amount.`;
+      }
+    } else {
+      return `Only letters are allowed in user.`;
+    }
   } else {
-    users.push(newUser);
-    console.log("New user added.");
+    return `User already exists`;
   }
-
-  users.forEach((user) => {
-    console.log(`User: ${user.user}, Balance: ${user.balance}`);
-  });
 }
 
 // Check if user exists
