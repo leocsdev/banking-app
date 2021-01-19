@@ -1,10 +1,3 @@
-// alert('Hello from app.js');
-
-// -------------------------------------------------------
-// TEST AREA
-
-// -------------------------------------------------------
-
 // Users Lists
 const users = [
   {
@@ -32,131 +25,81 @@ let User = function (user, balance) {
 
 // Create new user
 function createUser(user, balance = 0) {
-  // If new user
-  if (!userExist(user)) {
-    // Check if new user contains letters only
-    if (lettersOnly(user)) {
-      // Allow numbers only in balance
-      if (numbersOnly(balance)) {
-        // Allow 0 and positive number only in balance
-        if (balance >= 0) {
-          let newUser = new User(user, balance);
-
-          users.push(newUser);
-
-          return `User ${user} added.`;
-        } else {
-          return `Amount cannot be negative.`;
-        }
-      } else {
-        return `Only numbers are allowed in amount.`;
-      }
-    } else {
-      return `Only letters are allowed in user.`;
-    }
-  } else {
+  if (userExist(user)) {
     return `User already exists`;
   }
-}
 
-function getBalance(user = "") {
-  // Check if user exists
-  if (userExist(user)) {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].user.toUpperCase() == user.toUpperCase()) {
-        return users[i].balance;
-      }
-    }
+  if (!lettersOnly(user)) {
+    return `Only letters are allowed in user.`;
+  }
+
+  if (!numbersOnly(balance)) {
+    return `Only numbers are allowed in amount.`;
+  }
+
+  if (balance >= 0) {
+    let newUser = new User(user, balance);
+
+    users.push(newUser);
+
+    return `User ${user} added.`;
   } else {
-    return `User does not exist.`;
+    return `Amount cannot be negative.`;
   }
 }
 
 function deposit(user = "", amount = 0) {
-  // Check if user exists
-  if (userExist(user)) {
-    // Check if amount is a number
-    if (numbersOnly(amount)) {
-      if (amount >= 0) {
-        for (let i = 0; i < users.length; i++) {
-          if (users[i].user.toLowerCase() == user.toLowerCase()) {
-            users[i].balance += amount;
-            console.log(
-              `New balance for ${users[i].user} is ${users[i].balance} after deposit.`
-            );
-            return users[i].balance;
-          }
-        }
-      } else {
-        return `Amount cannot be negative.`;
+  if (!userExist(user)) {
+    return `User does not exist.`;
+  }
+
+  if (!numbersOnly(amount)) {
+    return `Only numbers are allowed in amount.`;
+  }
+
+  if (amount >= 0) {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].user.toLowerCase() == user.toLowerCase()) {
+        users[i].balance += amount;
+        console.log(
+          `New balance for ${users[i].user} is ${users[i].balance} after deposit.`
+        );
+        return users[i].balance;
       }
-    } else {
-      return `Only numbers are allowed in amount.`;
     }
   } else {
-    return `User does not exist.`;
+    return `Amount cannot be negative.`;
   }
 }
 
 function withdraw(user = "", amount = 0) {
-  // Check if user exists
-  if (userExist(user)) {
-    // Check if amount is a number
-    if (numbersOnly(amount)) {
-      if (amount >= 0) {
-        for (let i = 0; i < users.length; i++) {
-          if (users[i].user.toLowerCase() == user.toLowerCase()) {
-            // check balance if enough to make a withdrawal
-
-            if (users[i].balance > amount) {
-              users[i].balance -= amount;
-              console.log(
-                `New balance for ${users[i].user} is ${users[i].balance} after withdrawal.`
-              );
-              return users[i].balance;
-            } else {
-              return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
-            }
-          }
-        }
-      } else {
-        return `Amount cannot be negative.`;
-      }
-    } else {
-      return `Only numbers are allowed in amount.`;
-    }
-  } else {
+  if (!userExist(user)) {
     return `User does not exist.`;
   }
-}
 
-// function send(from = "", to = "", amount = 0) {
-//   if (userExist(from)) {
-//     if (userExist(to)) {
-//       if (numbersOnly(amount)) {
-//         if (amount >= 0) {
-//           if (getBalance(from) >= amount) {
-//             let balanceFrom = withdraw(from, amount);
-//             let balanceTo = deposit(to, amount);
-//             return `Balance for ${from} is ${balanceFormatter(
-//               balanceFrom
-//             )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
-//           } else {
-//             return `Balance for ${from} is insufficient.`;
-//           }
-//         } else {
-//           return `Amount cannot be negative.`;
-//         }
-//       } else {
-//         return `Only numbers are allowed in amount.`;
-//       }
-//     } else {
-//       return `Receiver does not exists.`;
-//     }
-//   } else {
-//     return `Sender does not exists.`;
-//   }
-// }
+  if (!numbersOnly(amount)) {
+    return `Only numbers are allowed in amount.`;
+  }
+
+  if (amount >= 0) {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].user.toLowerCase() == user.toLowerCase()) {
+        // check balance if enough to make a withdrawal
+        if (users[i].balance > amount) {
+          users[i].balance -= amount;
+          console.log(
+            `New balance for ${users[i].user} is ${users[i].balance} after withdrawal.`
+          );
+          return users[i].balance;
+        } else {
+          return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
+        }
+      }
+    }
+  } else {
+    return `Amount cannot be negative.`;
+  }
+}
 
 function send(from = "", to = "", amount = 0) {
   if (!userExist(from)) {
@@ -241,7 +184,137 @@ function numbersOnly(number) {
   }
 }
 
+function getBalance(user = "") {
+  // Check if user exists
+  if (userExist(user)) {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].user.toUpperCase() == user.toUpperCase()) {
+        return users[i].balance;
+      }
+    }
+  } else {
+    return `User does not exist.`;
+  }
+}
+
 function balanceFormatter(amount) {
   amount = amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return `Php${amount}`;
 }
+
+// -----------------------------------------------------------------------------
+
+// // Create new user
+// function createUser(user, balance = 0) {
+//   // If new user
+//   if (!userExist(user)) {
+//     // Check if new user contains letters only
+//     if (lettersOnly(user)) {
+//       // Allow numbers only in balance
+//       if (numbersOnly(balance)) {
+//         // Allow 0 and positive number only in balance
+//         if (balance >= 0) {
+//           let newUser = new User(user, balance);
+
+//           users.push(newUser);
+
+//           return `User ${user} added.`;
+//         } else {
+//           return `Amount cannot be negative.`;
+//         }
+//       } else {
+//         return `Only numbers are allowed in amount.`;
+//       }
+//     } else {
+//       return `Only letters are allowed in user.`;
+//     }
+//   } else {
+//     return `User already exists`;
+//   }
+// }
+
+// function deposit(user = "", amount = 0) {
+//   // Check if user exists
+//   if (userExist(user)) {
+//     // Check if amount is a number
+//     if (numbersOnly(amount)) {
+//       if (amount >= 0) {
+//         for (let i = 0; i < users.length; i++) {
+//           if (users[i].user.toLowerCase() == user.toLowerCase()) {
+//             users[i].balance += amount;
+//             console.log(
+//               `New balance for ${users[i].user} is ${users[i].balance} after deposit.`
+//             );
+//             return users[i].balance;
+//           }
+//         }
+//       } else {
+//         return `Amount cannot be negative.`;
+//       }
+//     } else {
+//       return `Only numbers are allowed in amount.`;
+//     }
+//   } else {
+//     return `User does not exist.`;
+//   }
+// }
+
+// function withdraw(user = "", amount = 0) {
+//   // Check if user exists
+//   if (userExist(user)) {
+//     // Check if amount is a number
+//     if (numbersOnly(amount)) {
+//       if (amount >= 0) {
+//         for (let i = 0; i < users.length; i++) {
+//           if (users[i].user.toLowerCase() == user.toLowerCase()) {
+//             // check balance if enough to make a withdrawal
+
+//             if (users[i].balance > amount) {
+//               users[i].balance -= amount;
+//               console.log(
+//                 `New balance for ${users[i].user} is ${users[i].balance} after withdrawal.`
+//               );
+//               return users[i].balance;
+//             } else {
+//               return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
+//             }
+//           }
+//         }
+//       } else {
+//         return `Amount cannot be negative.`;
+//       }
+//     } else {
+//       return `Only numbers are allowed in amount.`;
+//     }
+//   } else {
+//     return `User does not exist.`;
+//   }
+// }
+
+// function send(from = "", to = "", amount = 0) {
+//   if (userExist(from)) {
+//     if (userExist(to)) {
+//       if (numbersOnly(amount)) {
+//         if (amount >= 0) {
+//           if (getBalance(from) >= amount) {
+//             let balanceFrom = withdraw(from, amount);
+//             let balanceTo = deposit(to, amount);
+//             return `Balance for ${from} is ${balanceFormatter(
+//               balanceFrom
+//             )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
+//           } else {
+//             return `Balance for ${from} is insufficient.`;
+//           }
+//         } else {
+//           return `Amount cannot be negative.`;
+//         }
+//       } else {
+//         return `Only numbers are allowed in amount.`;
+//       }
+//     } else {
+//       return `Receiver does not exists.`;
+//     }
+//   } else {
+//     return `Sender does not exists.`;
+//   }
+// }
