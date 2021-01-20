@@ -133,6 +133,14 @@ function send(from = "", to = "", amount = 0) {
     return receiver_does_not_exists;
   }
 
+  if (from.toLowerCase() == to.toLowerCase()) {
+    return "Sender cannot be the same as receiver.";
+  }
+
+  if (to.toLowerCase() == from.toLowerCase()) {
+    return "Sender cannot be the same as receiver.";
+  }
+
   if (!numbersOnly(amount)) {
     return `Only numbers are allowed in amount.`;
   }
