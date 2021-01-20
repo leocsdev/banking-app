@@ -10,6 +10,12 @@ const users = [
   // },
 ];
 
+const user_already_exists = "User already exists.";
+const user_does_not_exists = "User does not exist.";
+const not_enough_money = "User's balance is insufficient.";
+const sender_does_not_exists = "Sender does not exists.";
+const receiver_does_not_exists = "Receiver does not exists.";
+
 function listUsers() {
   if (!users.length) {
     return `No users exist.`;
@@ -31,7 +37,8 @@ let User = function (user, balance) {
 // Create new user
 function createUser(user, balance = 0) {
   if (userExist(user)) {
-    return `User already exists`;
+    // return `User already exists`;
+    return user_already_exists;
   }
 
   if (!lettersOnly(user)) {
@@ -55,7 +62,8 @@ function createUser(user, balance = 0) {
 
 function deposit(user = "", amount = 0) {
   if (!userExist(user)) {
-    return `User does not exist.`;
+    // return `User does not exist.`;
+    return user_does_not_exists;
   }
 
   if (!numbersOnly(amount)) {
@@ -101,7 +109,8 @@ function withdraw(user = "", amount = 0) {
           );
           return users[i].balance;
         } else {
-          return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
+          // return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
+          return not_enough_money;
         }
       }
     }
@@ -112,11 +121,13 @@ function withdraw(user = "", amount = 0) {
 
 function send(from = "", to = "", amount = 0) {
   if (!userExist(from)) {
-    return `Sender does not exists`;
+    // return `Sender does not exists`;
+    return sender_does_not_exists;
   }
 
   if (!userExist(to)) {
-    return `Receiver does not exists`;
+    // return `Receiver does not exists`;
+    return receiver_does_not_exists;
   }
 
   if (!numbersOnly(amount)) {
@@ -127,9 +138,10 @@ function send(from = "", to = "", amount = 0) {
     if (getBalance(from) >= amount) {
       let balanceFrom = withdraw(from, amount);
       let balanceTo = deposit(to, amount);
-      return `Balance for ${from} is ${balanceFormatter(
-        balanceFrom
-      )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
+      // return `Balance for ${from} is ${balanceFormatter(
+      //   balanceFrom
+      // )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
+      return listUsers();
     } else {
       return `Balance for ${from} is insufficient.`;
     }
