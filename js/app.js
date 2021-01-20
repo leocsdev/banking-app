@@ -1,13 +1,13 @@
 // Users Lists
 const users = [
-  // {
-  //   user: "Leo",
-  //   balance: 0,
-  // },
-  // {
-  //   user: "Elijah",
-  //   balance: 100,
-  // },
+  {
+    user: "Leo",
+    balance: 50,
+  },
+  {
+    user: "Elijah",
+    balance: 100,
+  },
 ];
 
 const user_already_exists = "User already exists.";
@@ -50,6 +50,7 @@ function createUser(user, balance = 0) {
   }
 
   if (balance >= 0) {
+    balance = parseFloat(balance);
     let newUser = new User(user, balance);
 
     users.push(newUser);
@@ -71,6 +72,7 @@ function deposit(user = "", amount = 0) {
   }
 
   if (amount >= 0) {
+    amount = parseFloat(amount);
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         users[i].balance += amount;
@@ -97,6 +99,7 @@ function withdraw(user = "", amount = 0) {
   }
 
   if (amount >= 0) {
+    amount = parseFloat(amount);
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         // check balance if enough to make a withdrawal
@@ -135,6 +138,7 @@ function send(from = "", to = "", amount = 0) {
   }
 
   if (amount >= 0) {
+    amount = parseFloat(amount);
     if (getBalance(from) >= amount) {
       let balanceFrom = withdraw(from, amount);
       let balanceTo = deposit(to, amount);
