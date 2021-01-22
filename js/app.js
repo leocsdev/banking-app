@@ -3,10 +3,12 @@ const users = [
   {
     user: "Leo",
     balance: 50,
+    history: [],
   },
   {
     user: "Elijah",
     balance: 100,
+    history: [],
   },
 ];
 
@@ -15,6 +17,9 @@ const user_does_not_exists = "User does not exist.";
 const not_enough_money = "User's balance is insufficient.";
 const sender_does_not_exists = "Sender does not exists.";
 const receiver_does_not_exists = "Receiver does not exists.";
+
+// for timestamp
+const currentDate = new Date();
 
 function listUsers() {
   if (!users.length) {
@@ -29,9 +34,10 @@ function listUsers() {
 }
 
 // User Constructor
-let User = function (user, balance) {
+let User = function (user, balance, history = undefined) {
   this.user = user;
   this.balance = balance;
+  this.history = [];
 };
 
 // Create new user
@@ -81,6 +87,9 @@ function deposit(user = "", amount = 0) {
             users[i].balance
           )} after deposit.`
         );
+        users[i].history.push(
+          `Credited ${balanceFormatter(amount)} on ${currentDate}`
+        );
         return users[i].balance;
       }
     }
@@ -103,12 +112,15 @@ function withdraw(user = "", amount = 0) {
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         // check balance if enough to make a withdrawal
-        if (users[i].balance > amount) {
+        if (users[i].balance >= amount) {
           users[i].balance -= amount;
           console.log(
             `New balance for ${users[i].user} is ${balanceFormatter(
               users[i].balance
             )} after withdrawal.`
+          );
+          users[i].history.push(
+            `Debited ${balanceFormatter(amount)} on ${currentDate}`
           );
           return users[i].balance;
         } else {
@@ -233,4 +245,25 @@ function getBalance(user = "") {
 function balanceFormatter(amount) {
   amount = amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return `Php${amount}`;
+}
+
+// set empty array in each user object to store the logs
+// each of the 3 main functions (withdraw, deposit, send) should have a push to the array that records the action and the computer timestamp
+// for send, both to and from account should get a log
+// push the log at the end of array, but when displaying, show the last one first by looping through it
+
+// create search users function
+// loop through all objects and return user name values then match it with the user's input
+
+function search(input) {
+  input = prompt("Find a user:");
+  for (let i = 0; i < users.length; i++) {
+    if (userExist(input)) {
+      if (users[i].user.toLowerCase() == input.toLowerCase()) {
+        return users[i];
+      }
+    } else {
+      return user_does_not_exists;
+    }
+  }
 }
