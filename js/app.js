@@ -1,16 +1,57 @@
 // Users Lists
-const users = [
-  {
-    user: "Leo",
-    balance: 50,
-    history: [],
-  },
-  {
-    user: "Elijah",
-    balance: 100,
-    history: [],
-  },
-];
+let users;
+// const users = [
+// {
+//   user: "Leo",
+//   balance: 50,
+//   history: [],
+// },
+// {
+//   user: "Elijah",
+//   balance: 100,
+//   history: [],
+// },
+// ];
+
+// Load all event listeners when app loads
+loadEventListeners();
+
+function loadEventListeners() {
+  document.addEventListener("DOMContentLoaded", getUsers);
+}
+
+// Load tasks once the page is loaded
+function getUsers() {
+  // let users;
+  // check if there are users stored in local storage
+  if (localStorage.getItem("users") === null) {
+    // if none, set task to none
+    users = [];
+  } else {
+    // if there are users, convert it to array
+    users = JSON.parse(localStorage.getItem("users"));
+  }
+
+  listUsers();
+}
+
+// Store Users array in Local Storage
+function addNewUserInLocalStorage(newUser) {
+  // let users;
+  // check if there are users stored in local storage
+  if (localStorage.getItem("users") === null) {
+    // if none, set task to none
+    users = [];
+  } else {
+    // if there are users, convert it to array
+    users = JSON.parse(localStorage.getItem("users"));
+  }
+
+  // and add the new task
+  users.push(newUser);
+  // convert users to string and set it back to localStorage
+  localStorage.setItem("users", JSON.stringify(users));
+}
 
 const user_already_exists = "User already exists.";
 const user_does_not_exists = "User does not exist.";
@@ -59,7 +100,8 @@ function createUser(user, balance = 0) {
     balance = parseFloat(balance);
     let newUser = new User(user, balance);
 
-    users.push(newUser);
+    // users.push(newUser);
+    addNewUserInLocalStorage(newUser);
 
     return `User ${user} added.`;
   } else {
@@ -79,9 +121,23 @@ function deposit(user = "", amount = 0) {
 
   if (amount >= 0) {
     amount = parseFloat(amount);
+
+    // ---------------------
+
+    // check if there are users stored in local storage
+    if (localStorage.getItem("users") === null) {
+      // if none, set task to none
+      users = [];
+    } else {
+      // if there are users, convert it to array
+      users = JSON.parse(localStorage.getItem("users"));
+    }
+    // ---------------------
+
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         users[i].balance += amount;
+
         console.log(
           `New balance for ${users[i].user} is ${balanceFormatter(
             users[i].balance
@@ -90,6 +146,13 @@ function deposit(user = "", amount = 0) {
         users[i].history.push(
           `Credited ${balanceFormatter(amount)} on ${currentDate}`
         );
+
+        // ---------------------
+
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // ---------------------
+
         return users[i].balance;
       }
     }
@@ -109,6 +172,19 @@ function withdraw(user = "", amount = 0) {
 
   if (amount >= 0) {
     amount = parseFloat(amount);
+
+    // ---------------------
+
+    // check if there are users stored in local storage
+    if (localStorage.getItem("users") === null) {
+      // if none, set task to none
+      users = [];
+    } else {
+      // if there are users, convert it to array
+      users = JSON.parse(localStorage.getItem("users"));
+    }
+    // ---------------------
+
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         // check balance if enough to make a withdrawal
@@ -122,6 +198,13 @@ function withdraw(user = "", amount = 0) {
           users[i].history.push(
             `Debited ${balanceFormatter(amount)} on ${currentDate}`
           );
+
+          // ---------------------
+
+          localStorage.setItem("users", JSON.stringify(users));
+
+          // ---------------------
+
           return users[i].balance;
         } else {
           // return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
