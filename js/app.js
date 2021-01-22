@@ -1,5 +1,7 @@
 // Users Lists
-let users;
+
+// let users;
+
 // const users = [
 // {
 //   user: "Leo",
@@ -17,6 +19,7 @@ let users;
 loadEventListeners();
 
 function loadEventListeners() {
+  let users;
   document.addEventListener("DOMContentLoaded", getUsers);
 }
 
@@ -60,7 +63,20 @@ const sender_does_not_exists = "Sender does not exists.";
 const receiver_does_not_exists = "Receiver does not exists.";
 
 // for timestamp
-const currentDate = new Date();
+function getCurrentDateTime() {
+  let now = new Date();
+
+  let dateStr = now.toDateString();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+  let second = now.getSeconds();
+
+  // append 0 before minute and second vars, if their digit is 0 to 9
+  minute = (minute < 10 ? "0" : "") + minute;
+  second = (second < 10 ? "0" : "") + second;
+
+  return `${dateStr}, ${hour}:${minute}:${second}`;
+}
 
 function listUsers() {
   if (!users.length) {
@@ -143,8 +159,9 @@ function deposit(user = "", amount = 0) {
             users[i].balance
           )} after deposit.`
         );
+
         users[i].history.push(
-          `Credited ${balanceFormatter(amount)} on ${currentDate}`
+          `Credited ${balanceFormatter(amount)} on ${getCurrentDateTime()}`
         );
 
         // ---------------------
@@ -196,7 +213,7 @@ function withdraw(user = "", amount = 0) {
             )} after withdrawal.`
           );
           users[i].history.push(
-            `Debited ${balanceFormatter(amount)} on ${currentDate}`
+            `Debited ${balanceFormatter(amount)} on ${getCurrentDateTime()}`
           );
 
           // ---------------------
