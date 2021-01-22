@@ -251,3 +251,19 @@ function balanceFormatter(amount) {
 // each of the 3 main functions (withdraw, deposit, send) should have a push to the array that records the action and the computer timestamp
 // for send, both to and from account should get a log
 // push the log at the end of array, but when displaying, show the last one first by looping through it
+
+// create search users function
+// loop through all objects and return user name values then match it with the user's input
+
+function search(input) {
+  input = prompt("Find a user:");
+  for (let i = 0; i < users.length; i++) {
+    if (userExist(input)) {
+      if (users[i].user.toLowerCase() == input.toLowerCase()) {
+        return users[i];
+      }
+    } else {
+      return user_does_not_exists;
+    }
+  }
+}
