@@ -27,18 +27,16 @@
       <div class="sidebar">
         Dashboard
         <ul>
-          <li>
-            <button
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#createUserModal"
-            >
-              Create User
-            </button>
+          <li
+            class="btn btn-success"
+            data-toggle="modal"
+            data-target="#createUserModal"
+          >
+            Create User
           </li>
           <li>
             <button
-              class="btn btn-primary"
+              class="btn btn-success"
               data-toggle="modal"
               data-target="#depositModal"
             >
@@ -140,8 +138,11 @@
                   <span>&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
-                <form>
+
+              <div class="modal-error" id="modalError"></div>
+
+              <form>
+                <div class="modal-body">
                   <div class="form-group">
                     <label for="user">Deposit To</label>
                     <input
@@ -160,11 +161,16 @@
                       placeholder="Amount In Peso"
                     />
                   </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-success btn-block">DEPOSIT</button>
-              </div>
+                </div>
+
+                <div class="modal-footer">
+                  <input
+                    type="submit"
+                    value="DEPOSIT"
+                    class="btn btn-success btn-block"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -179,8 +185,11 @@
                   <span>&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
-                <form>
+
+              <div class="modal-error" id="modalError"></div>
+
+              <form>
+                <div class="modal-body">
                   <div class="form-group">
                     <label for="user">Withdraw From</label>
                     <input
@@ -199,11 +208,16 @@
                       placeholder="Amount In Peso"
                     />
                   </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-success btn-block">Withdraw</button>
-              </div>
+                </div>
+
+                <div class="modal-footer">
+                  <input
+                    type="submit"
+                    value="WITHDRAW"
+                    class="btn btn-success btn-block"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -218,8 +232,11 @@
                   <span>&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
-                <form>
+
+              <div class="modal-error" id="modalError"></div>
+
+              <form>
+                <div class="modal-body">
                   <div class="form-group">
                     <label for="user">Withdraw From</label>
                     <input
@@ -247,11 +264,16 @@
                       placeholder="Amount In Peso"
                     />
                   </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-success btn-block">Send</button>
-              </div>
+                </div>
+
+                <div class="modal-footer">
+                  <input
+                    type="submit"
+                    value="SEND"
+                    class="btn btn-success btn-block"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </div>

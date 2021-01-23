@@ -39,10 +39,10 @@ function showModalError(error) {
   <p class="text-danger text-center mt-3 mb-0">${error}</p>
   `;
 
-  setTimeout(hideModalError, 3000);
+  setTimeout(clearError, 3000);
 }
 
-function hideModalError() {
+function clearError() {
   modalError.style.display = "none";
 }
 
