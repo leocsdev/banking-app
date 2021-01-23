@@ -6,6 +6,9 @@ const formCreateUser = document.getElementById("formCreateUser");
 const inputCreateUser = document.getElementById("createUser");
 const inputCreateUserAmount = document.getElementById("createUserAmount");
 
+// Modal Error DOM
+const modalError = document.querySelector(".modal-error");
+
 // GLOBAL VARS
 // let user;
 // let amount;
@@ -28,58 +31,43 @@ function loadEventListeners() {
 }
 
 // FUNCTIONS
-// Create new user
-// function createUser(user, balance = 0) {
-//   if (userExist(user)) {
-//     // return `User already exists`;
-//     return user_already_exists;
-//   }
-//   if (!lettersOnly(user)) {
-//     return `Only letters are allowed in user.`;
-//   }
-//   if (!numbersOnly(balance)) {
-//     return `Only numbers are allowed in amount.`;
-//   }
-//   if (balance >= 0) {
-//     balance = parseFloat(balance);
-//     let newUser = new User(user, balance);
-//     // users.push(newUser);
-//     addNewUserInLocalStorage(newUser);
-//     listUsers();
-//     return `User ${user} added.`;
-//   } else {
-//     return `Amount cannot be negative.`;
-//   }
-// }
+// Error Message
+function showModalError(error) {
+  modalError.style.display = "block";
 
+  modalError.innerHTML = `
+  <p class="text-danger text-center mt-3 mb-0">${error}</p>
+  `;
+
+  setTimeout(hideModalError, 3000);
+}
+
+function hideModalError() {
+  modalError.style.display = "none";
+}
+
+// Create new user
 function createUser(e) {
   let user = inputCreateUser.value;
   let amount = inputCreateUserAmount.value;
 
-  if (!user) {
-    e.preventDefault();
-    return alert("Please enter user name");
-  }
-
-  if (!amount) {
-    e.preventDefault();
-    return alert("Please enter amount");
-  }
-
   if (userExist(user)) {
     // return `User already exists`;
     e.preventDefault();
-    return alert(user_already_exists);
+    // return alert(user_already_exists);
+    return showModalError(user_already_exists);
   }
 
   if (!lettersOnly(user)) {
     e.preventDefault();
-    return alert(`Only letters are allowed in user.`);
+    // return alert(`Only letters are allowed in user.`);
+    return showModalError("Only letters are allowed in user.");
   }
 
   if (!numbersOnly(amount)) {
     e.preventDefault();
-    return alert(`Only numbers are allowed in amount.`);
+    // return alert(`Only numbers are allowed in amount.`);
+    return showModalError("Only numbers are allowed in amount.");
   }
   if (amount >= 0) {
     amount = parseFloat(amount);
@@ -92,7 +80,8 @@ function createUser(e) {
     return alert(`User ${user} added.`);
   } else {
     e.preventDefault();
-    return alert(`Amount cannot be negative.`);
+    // return alert(`Amount cannot be negative.`);
+    return showModalError("Amount cannot be negative.");
   }
 }
 

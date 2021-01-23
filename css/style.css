@@ -173,11 +173,6 @@ body {
   /* background-color: #e1e0e6; */
 }
 
-#admin #usersList {
-  overflow-y: auto;
-}
-
-#admin #deposit .card {
-  background-color: #fff;
-  background-image: none;
+#admin .main .modal-error {
+  display: none;
 }
