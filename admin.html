@@ -20,10 +20,239 @@
 
     <title>Bankoto</title>
   </head>
-  <body>
-    <nav>Nav Here</nav>
-    <div>Sidebar here</div>
-    <main>Main Content Here</main>
+  <body id="bodyAdmin">
+    <div class="admin" id="admin">
+      <div class="topbar">Bankoto</div>
+      <div class="sidebar">
+        Dashboard
+        <ul>
+          <li>
+            <button
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#createUserModal"
+            >
+              Create User
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#depositModal"
+            >
+              Deposit
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn btn-success"
+              data-toggle="modal"
+              data-target="#withdrawModal"
+            >
+              Withdraw
+            </button>
+          </li>
+          <li>
+            <button
+              class="btn btn-success"
+              data-toggle="modal"
+              data-target="#sendModal"
+            >
+              Send
+            </button>
+          </li>
+        </ul>
+
+        <div class="side-footer">Footer Here</div>
+      </div>
+      <main class="main">
+        <section id="userslist" class="h-100">
+          <h2 class="text-center my-4">Users List</h2>
+          <div class="table-list">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="pl-5" scope="col">User</th>
+                  <th scope="col">Balance</th>
+                </tr>
+              </thead>
+              <tbody class="user-list" id="userList"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- CREATE USER MODAL -->
+        <div class="modal fade text-dark" id="createUserModal">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">CREATE USER</h5>
+                <button class="close" data-dismiss="modal">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="formCreateUser">
+                  <div class="form-group">
+                    <label for="user">User Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="createUser"
+                      placeholder="Enter User Name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="amount">Initial Deposit Amount</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="createUserAmount"
+                      placeholder="Amount In Peso"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <input
+                      type="submit"
+                      value="CREATE USER"
+                      class="btn btn-success btn-block"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEPOSIT MODAL -->
+        <div class="modal fade text-dark" id="depositModal">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">DEPOSIT MONEY</h5>
+                <button class="close" data-dismiss="modal">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="user">Deposit To</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="user"
+                      placeholder="Enter User"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="user">Deposit Amount</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="amount"
+                      placeholder="Amount In Peso"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success btn-block">DEPOSIT</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WITHDRAW MODAL -->
+        <div class="modal fade text-dark" id="withdrawModal">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">WITHDRAW MONEY</h5>
+                <button class="close" data-dismiss="modal">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="user">Withdraw From</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="user"
+                      placeholder="Enter User"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="user">Withdrawal Amount</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="amount"
+                      placeholder="Amount In Peso"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success btn-block">Withdraw</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEND MODAL -->
+        <div class="modal fade text-dark" id="sendModal">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">SEND MONEY</h5>
+                <button class="close" data-dismiss="modal">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="user">Withdraw From</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="user"
+                      placeholder="Enter User"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="user">Deposit To</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="user"
+                      placeholder="Enter User"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="user">Transfer Amount</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="amount"
+                      placeholder="Amount In Peso"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success btn-block">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

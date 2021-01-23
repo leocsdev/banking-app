@@ -1,26 +1,99 @@
-// Users Lists
+// VARS AND UIs DOMs
+const userList = document.getElementById("userList");
 
-// let users;
+// Create User DOMs
+const formCreateUser = document.getElementById("formCreateUser");
+const inputCreateUser = document.getElementById("createUser");
+const inputCreateUserAmount = document.getElementById("createUserAmount");
 
-// const users = [
-// {
-//   user: "Leo",
-//   balance: 50,
-//   history: [],
-// },
-// {
-//   user: "Elijah",
-//   balance: 100,
-//   history: [],
-// },
-// ];
+// GLOBAL VARS
+// let user;
+// let amount;
+//
+const user_already_exists = "User already exists.";
+const user_does_not_exists = "User does not exist.";
+const not_enough_money = "User's balance is insufficient.";
+const sender_does_not_exists = "Sender does not exists.";
+const receiver_does_not_exists = "Receiver does not exists.";
 
-// Load all event listeners when app loads
+// LOAD ALL EVENT LISTENERS WHEN APP LOADS
 loadEventListeners();
 
 function loadEventListeners() {
   let users;
+
   document.addEventListener("DOMContentLoaded", getUsers);
+
+  formCreateUser.addEventListener("submit", createUser);
+}
+
+// FUNCTIONS
+// Create new user
+// function createUser(user, balance = 0) {
+//   if (userExist(user)) {
+//     // return `User already exists`;
+//     return user_already_exists;
+//   }
+//   if (!lettersOnly(user)) {
+//     return `Only letters are allowed in user.`;
+//   }
+//   if (!numbersOnly(balance)) {
+//     return `Only numbers are allowed in amount.`;
+//   }
+//   if (balance >= 0) {
+//     balance = parseFloat(balance);
+//     let newUser = new User(user, balance);
+//     // users.push(newUser);
+//     addNewUserInLocalStorage(newUser);
+//     listUsers();
+//     return `User ${user} added.`;
+//   } else {
+//     return `Amount cannot be negative.`;
+//   }
+// }
+
+function createUser(e) {
+  let user = inputCreateUser.value;
+  let amount = inputCreateUserAmount.value;
+
+  if (!user) {
+    e.preventDefault();
+    return alert("Please enter user name");
+  }
+
+  if (!amount) {
+    e.preventDefault();
+    return alert("Please enter amount");
+  }
+
+  if (userExist(user)) {
+    // return `User already exists`;
+    e.preventDefault();
+    return alert(user_already_exists);
+  }
+
+  if (!lettersOnly(user)) {
+    e.preventDefault();
+    return alert()`Only letters are allowed in user.`;
+  }
+
+  if (!numbersOnly(amount)) {
+    e.preventDefault();
+    return alert(`Only numbers are allowed in amount.`);
+  }
+  if (amount >= 0) {
+    amount = parseFloat(amount);
+    let newUser = new User(user, amount);
+
+    addNewUserInLocalStorage(newUser);
+
+    listUsers();
+
+    return alert(`User ${user} added.`);
+  } else {
+    e.preventDefault();
+    return alert(`Amount cannot be negative.`);
+  }
 }
 
 // Load tasks once the page is loaded
@@ -56,12 +129,6 @@ function addNewUserInLocalStorage(newUser) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
-const user_already_exists = "User already exists.";
-const user_does_not_exists = "User does not exist.";
-const not_enough_money = "User's balance is insufficient.";
-const sender_does_not_exists = "Sender does not exists.";
-const receiver_does_not_exists = "Receiver does not exists.";
-
 // for timestamp
 function getCurrentDateTime() {
   let now = new Date();
@@ -79,11 +146,29 @@ function getCurrentDateTime() {
 }
 
 function listUsers() {
+  // check if there are users stored in local storage
+  if (localStorage.getItem("users") === null) {
+    // if none, set task to none
+    users = [];
+  } else {
+    // if there are users, convert it to array
+    users = JSON.parse(localStorage.getItem("users"));
+  }
+
   if (!users.length) {
     return `No users exist.`;
   }
 
   users.forEach((user) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td class="pl-5">${user.user}</td>
+      <td>${balanceFormatter(user.balance)}</td>
+    `;
+
+    userList.appendChild(tr);
+
     console.log(
       `User: ${user.user}, Balance: ${balanceFormatter(user.balance)}`
     );
@@ -96,34 +181,6 @@ let User = function (user, balance, history = undefined) {
   this.balance = balance;
   this.history = [];
 };
-
-// Create new user
-function createUser(user, balance = 0) {
-  if (userExist(user)) {
-    // return `User already exists`;
-    return user_already_exists;
-  }
-
-  if (!lettersOnly(user)) {
-    return `Only letters are allowed in user.`;
-  }
-
-  if (!numbersOnly(balance)) {
-    return `Only numbers are allowed in amount.`;
-  }
-
-  if (balance >= 0) {
-    balance = parseFloat(balance);
-    let newUser = new User(user, balance);
-
-    // users.push(newUser);
-    addNewUserInLocalStorage(newUser);
-
-    return `User ${user} added.`;
-  } else {
-    return `Amount cannot be negative.`;
-  }
-}
 
 function deposit(user = "", amount = 0) {
   if (!userExist(user)) {
@@ -344,7 +401,7 @@ function getBalance(user = "") {
 
 function balanceFormatter(amount) {
   amount = amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return `Php${amount}`;
+  return `Php ${amount}`;
 }
 
 // set empty array in each user object to store the logs

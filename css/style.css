@@ -30,8 +30,6 @@ body {
   line-height: 1.1;
   font-family: "Public Sans", sans-serif;
   color: #23273c;
-
-  /* overflow: hidden; */
 }
 
 .container {
@@ -142,22 +140,44 @@ body {
 /* Index Page - END */
 
 /* Admin Page */
+#bodyAdmin {
+  overflow: hidden;
+}
+
 #admin {
   height: 100vh;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 3rem 1fr;
+  grid-template-areas:
+    "sidebar topbar topbar topbar"
+    "sidebar main main main"
+    "sidebar main main main";
 }
 
 #admin .topbar {
-  background-color: green;
+  grid-area: topbar;
+  background-color: #c8c7cd;
+  /* background-image: linear-gradient(to right, #41dc65, #3ec3d5); */
 }
 
 #admin .sidebar {
-  background-color: blue;
+  background-color: #23273c;
+  grid-area: sidebar;
+  color: #fff;
 }
 
 #admin .main {
-  background-color: cadetblue;
+  grid-area: main;
+  /* background-color: #e1e0e6; */
 }
 
-#admin .footer {
-  background-color: darkgrey;
+#admin #usersList {
+  overflow-y: auto;
+}
+
+#admin #deposit .card {
+  background-color: #fff;
+  background-image: none;
 }
