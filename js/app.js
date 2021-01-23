@@ -50,7 +50,12 @@ function loadEventListeners() {
     createUser(user, amount, e);
   });
 
-  formDeposit.addEventListener("submit", deposit);
+  formDeposit.addEventListener("submit", function (e) {
+    let user = inputDepositUser.value;
+    let amount = inputDepositAmount.value;
+
+    deposit(user, amount, e);
+  });
 
   formWithdraw.addEventListener("submit", withdraw);
 
@@ -94,9 +99,9 @@ function createUser(user, amount, e) {
 }
 
 // Deposit amount to user
-function deposit(e) {
-  let user = inputDepositUser.value;
-  let amount = inputDepositAmount.value;
+function deposit(user, amount, e) {
+  // let user = inputDepositUser.value;
+  // let amount = inputDepositAmount.value;
 
   if (!userExist(user)) {
     e.preventDefault();
