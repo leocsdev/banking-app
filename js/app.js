@@ -8,16 +8,33 @@ const only_letters_allowed = "Only letters are allowed in user.";
 const only_numbers_allowed = "Only numbers are allowed in amount.";
 const cannot_be_negative = "Amount cannot be negative.";
 
-// VARS AND UIs DOMs
+// Display DOMs
 const userList = document.getElementById("userList");
 
 // Create User DOMs
+const modalErrorCreateUser = document.getElementById("modalErrorCreateUser");
 const formCreateUser = document.getElementById("formCreateUser");
 const inputCreateUser = document.getElementById("inputCreateUser");
 const inputCreateUserAmount = document.getElementById("inputCreateUserAmount");
-const modalErrorCreateUser = document.getElementById("modalErrorCreateUser");
 
 // Deposit DOMs
+const modalErrorDeposit = document.getElementById("modalErrorDeposit");
+const formDeposit = document.getElementById("formDeposit");
+const inputDepositUser = document.getElementById("inputDepositUser");
+const inputDepositAmount = document.getElementById("inputDepositAmount");
+
+// Withdraw DOMs
+const modalErrorWithdraw = document.getElementById("modalErrorWithdraw");
+const formWithdraw = document.getElementById("formWithdraw");
+const inputWithdrawUser = document.getElementById("inputWithdrawUser");
+const inputWithdrawAmount = document.getElementById("inputWithdrawAmount");
+
+// Send DOMs
+const modalErrorSend = document.getElementById("modalErrorSend");
+const formSend = document.getElementById("formSend");
+const inputWithdrawFrom = document.getElementById("inputWithdrawFrom");
+const inputDepositTo = document.getElementById("inputDepositTo");
+const inputTransferAmount = document.getElementById("inputTransferAmount");
 
 // LOAD ALL EVENT LISTENERS WHEN APP LOADS
 loadEventListeners();
@@ -28,6 +45,12 @@ function loadEventListeners() {
   document.addEventListener("DOMContentLoaded", getUsers);
 
   formCreateUser.addEventListener("submit", createUser);
+
+  formDeposit.addEventListener("submit", deposit);
+
+  formWithdraw.addEventListener("submit", withdraw);
+
+  formSend.addEventListener("submit", send);
 }
 
 // FUNCTIONS
@@ -52,6 +75,7 @@ function createUser(e) {
   }
   if (amount >= 0) {
     amount = parseFloat(amount);
+
     let newUser = new User(user, amount);
 
     addNewUserInLocalStorage(newUser);
@@ -65,14 +89,19 @@ function createUser(e) {
   }
 }
 
-function deposit(user = "", amount = 0) {
+// Deposit amount to user
+function deposit(e) {
+  let user = inputDepositUser.value;
+  let amount = inputDepositAmount.value;
+
   if (!userExist(user)) {
-    // return `User does not exist.`;
-    return user_does_not_exists;
+    e.preventDefault();
+    return showModalError(modalErrorDeposit, user_does_not_exists);
   }
 
   if (!numbersOnly(amount)) {
-    return `Only numbers are allowed in amount.`;
+    e.preventDefault();
+    return showModalError(modalErrorDeposit, only_numbers_allowed);
   }
 
   if (amount >= 0) {
@@ -109,22 +138,32 @@ function deposit(user = "", amount = 0) {
         localStorage.setItem("users", JSON.stringify(users));
 
         // ---------------------
+        listUsers();
 
         return users[i].balance;
       }
     }
   } else {
-    return `Amount cannot be negative.`;
+    e.preventDefault();
+    return showModalError(modalErrorDeposit, cannot_be_negative);
   }
 }
 
-function withdraw(user = "", amount = 0) {
+// Withdraw amount from user
+function withdraw(e) {
+  let user = inputWithdrawUser.value;
+  let amount = inputWithdrawAmount.value;
+
   if (!userExist(user)) {
-    return `User does not exist.`;
+    // return `User does not exist.`;
+    e.preventDefault();
+    return showModalError(modalErrorWithdraw, user_does_not_exists);
   }
 
   if (!numbersOnly(amount)) {
-    return `Only numbers are allowed in amount.`;
+    // return `Only numbers are allowed in amount.`;
+    e.preventDefault();
+    return showModalError(modalErrorWithdraw, only_numbers_allowed);
   }
 
   if (amount >= 0) {
@@ -164,37 +203,54 @@ function withdraw(user = "", amount = 0) {
 
           return users[i].balance;
         } else {
-          // return `Sorry, ${users[i].user}'s balance is insufficient to process the withdrawal.`;
-          return not_enough_money;
+          e.preventDefault();
+          return showModalError(modalErrorWithdraw, not_enough_money);
         }
       }
     }
   } else {
-    return `Amount cannot be negative.`;
+    e.preventDefault();
+    return showModalError(modalErrorWithdraw, cannot_be_negative);
   }
 }
 
-function send(from = "", to = "", amount = 0) {
+// function send(from = "", to = "", amount = 0) {
+function send(e) {
+  let from = inputWithdrawFrom.value;
+  let to = inputDepositTo.value;
+  let amount = inputTransferAmount.value;
+
   if (!userExist(from)) {
     // return `Sender does not exists`;
-    return sender_does_not_exists;
+    // return sender_does_not_exists;
+    e.preventDefault();
+    return showModalError(modalErrorSend, sender_does_not_exists);
   }
 
   if (!userExist(to)) {
     // return `Receiver does not exists`;
-    return receiver_does_not_exists;
+    // return receiver_does_not_exists;
+    e.preventDefault();
+    return showModalError(modalErrorSend, receiver_does_not_exists);
   }
 
   if (from.toLowerCase() == to.toLowerCase()) {
-    return "Sender cannot be the same as receiver.";
+    // return "Sender cannot be the same as receiver.";
+    e.preventDefault();
+    return showModalError(
+      modalErrorSend,
+      "Sender cannot be the same as receiver."
+    );
   }
 
-  if (to.toLowerCase() == from.toLowerCase()) {
-    return "Sender cannot be the same as receiver.";
-  }
+  // if (to.toLowerCase() == from.toLowerCase()) {
+  //   return "Sender cannot be the same as receiver.";
+  // }
 
   if (!numbersOnly(amount)) {
-    return `Only numbers are allowed in amount.`;
+    // return `Only numbers are allowed in amount.`;
+    e.preventDefault();
+    return showModalError(modalErrorSend, only_numbers_allowed);
   }
 
   if (amount >= 0) {
@@ -207,14 +263,19 @@ function send(from = "", to = "", amount = 0) {
       // )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
       return listUsers();
     } else {
-      return `Balance for ${from} is insufficient.`;
+      // return `Balance for ${from} is insufficient.`;
+      e.preventDefault();
+      return showModalError(modalErrorSend, not_enough_money);
     }
   } else {
-    return `Amount cannot be negative.`;
+    // return `Amount cannot be negative.`;
+    e.preventDefault();
+    return showModalError(modalErrorSend, cannot_be_negative);
   }
 }
 
-// Utility Functions
+// UTILITY FUNCTIONS
+
 // Check if user exists
 function userExist(user) {
   // Check if user contains only letters
