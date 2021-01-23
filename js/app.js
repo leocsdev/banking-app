@@ -47,6 +47,7 @@ function loadEventListeners() {
   formCreateUser.addEventListener("submit", function (e) {
     let user = inputCreateUser.value;
     let amount = inputCreateUserAmount.value;
+
     createUser(user, amount, e);
   });
 
@@ -60,18 +61,23 @@ function loadEventListeners() {
   formWithdraw.addEventListener("submit", function (e) {
     let user = inputWithdrawUser.value;
     let amount = inputWithdrawAmount.value;
+
     withdraw(user, amount, e);
   });
 
-  formSend.addEventListener("submit", send);
+  formSend.addEventListener("submit", function (e) {
+    let from = inputWithdrawFrom.value;
+    let to = inputDepositTo.value;
+    let amount = inputTransferAmount.value;
+
+    send(from, to, amount, e);
+  });
 }
 
 // FUNCTIONS
+
 // Create new user
 function createUser(user, amount, e) {
-  // let user = inputCreateUser.value;
-  // let amount = inputCreateUserAmount.value;
-
   if (userExist(user)) {
     e.preventDefault();
     return showModalError(modalErrorCreateUser, user_already_exists);
@@ -104,9 +110,6 @@ function createUser(user, amount, e) {
 
 // Deposit amount to user
 function deposit(user, amount, e) {
-  // let user = inputDepositUser.value;
-  // let amount = inputDepositAmount.value;
-
   if (!userExist(user)) {
     e.preventDefault();
     return showModalError(modalErrorDeposit, user_does_not_exists);
@@ -120,8 +123,6 @@ function deposit(user, amount, e) {
   if (amount >= 0) {
     amount = parseFloat(amount);
 
-    // ---------------------
-
     // check if there are users stored in local storage
     if (localStorage.getItem("users") === null) {
       // if none, set task to none
@@ -130,7 +131,6 @@ function deposit(user, amount, e) {
       // if there are users, convert it to array
       users = JSON.parse(localStorage.getItem("users"));
     }
-    // ---------------------
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
@@ -146,11 +146,9 @@ function deposit(user, amount, e) {
           `Credited ${balanceFormatter(amount)} on ${getCurrentDateTime()}`
         );
 
-        // ---------------------
-
+        // convert users array to string before displaying users list in DOM
         localStorage.setItem("users", JSON.stringify(users));
 
-        // ---------------------
         listUsers();
 
         return users[i].balance;
@@ -164,25 +162,18 @@ function deposit(user, amount, e) {
 
 // Withdraw amount from user
 function withdraw(user, amount, e) {
-  // let user = inputWithdrawUser.value;
-  // let amount = inputWithdrawAmount.value;
-
   if (!userExist(user)) {
-    // return `User does not exist.`;
     e.preventDefault();
     return showModalError(modalErrorWithdraw, user_does_not_exists);
   }
 
   if (!numbersOnly(amount)) {
-    // return `Only numbers are allowed in amount.`;
     e.preventDefault();
     return showModalError(modalErrorWithdraw, only_numbers_allowed);
   }
 
   if (amount >= 0) {
     amount = parseFloat(amount);
-
-    // ---------------------
 
     // check if there are users stored in local storage
     if (localStorage.getItem("users") === null) {
@@ -192,7 +183,6 @@ function withdraw(user, amount, e) {
       // if there are users, convert it to array
       users = JSON.parse(localStorage.getItem("users"));
     }
-    // ---------------------
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
@@ -208,11 +198,8 @@ function withdraw(user, amount, e) {
             `Debited ${balanceFormatter(amount)} on ${getCurrentDateTime()}`
           );
 
-          // ---------------------
-
+          // convert users array to string before displaying users list in DOM
           localStorage.setItem("users", JSON.stringify(users));
-
-          // ---------------------
 
           return users[i].balance;
         } else {
@@ -227,28 +214,18 @@ function withdraw(user, amount, e) {
   }
 }
 
-// function send(from = "", to = "", amount = 0) {
-function send(e) {
-  let from = inputWithdrawFrom.value;
-  let to = inputDepositTo.value;
-  let amount = inputTransferAmount.value;
-
+function send(from, to, amount, e) {
   if (!userExist(from)) {
-    // return `Sender does not exists`;
-    // return sender_does_not_exists;
     e.preventDefault();
     return showModalError(modalErrorSend, sender_does_not_exists);
   }
 
   if (!userExist(to)) {
-    // return `Receiver does not exists`;
-    // return receiver_does_not_exists;
     e.preventDefault();
     return showModalError(modalErrorSend, receiver_does_not_exists);
   }
 
   if (from.toLowerCase() == to.toLowerCase()) {
-    // return "Sender cannot be the same as receiver.";
     e.preventDefault();
     return showModalError(
       modalErrorSend,
@@ -256,12 +233,7 @@ function send(e) {
     );
   }
 
-  // if (to.toLowerCase() == from.toLowerCase()) {
-  //   return "Sender cannot be the same as receiver.";
-  // }
-
   if (!numbersOnly(amount)) {
-    // return `Only numbers are allowed in amount.`;
     e.preventDefault();
     return showModalError(modalErrorSend, only_numbers_allowed);
   }
@@ -271,23 +243,26 @@ function send(e) {
     if (getBalance(from) >= amount) {
       let balanceFrom = withdraw(from, amount);
       let balanceTo = deposit(to, amount);
-      // return `Balance for ${from} is ${balanceFormatter(
-      //   balanceFrom
-      // )}, balance for ${to} is ${balanceFormatter(balanceTo)}`;
+
       return listUsers();
     } else {
-      // return `Balance for ${from} is insufficient.`;
       e.preventDefault();
       return showModalError(modalErrorSend, not_enough_money);
     }
   } else {
-    // return `Amount cannot be negative.`;
     e.preventDefault();
     return showModalError(modalErrorSend, cannot_be_negative);
   }
 }
 
 // UTILITY FUNCTIONS
+
+// User Constructor
+let User = function (user, balance, history = undefined) {
+  this.user = user;
+  this.balance = balance;
+  this.history = [];
+};
 
 // Check if user exists
 function userExist(user) {
@@ -352,7 +327,7 @@ function getBalance(user = "") {
       }
     }
   } else {
-    return `User does not exist.`;
+    return user_does_not_exists;
   }
 }
 
@@ -389,7 +364,6 @@ function showModalError(modalErrorDOM, errorMsg) {
 
 // Load tasks once the page is loaded
 function getUsers() {
-  // let users;
   // check if there are users stored in local storage
   if (localStorage.getItem("users") === null) {
     // if none, set task to none
@@ -404,10 +378,9 @@ function getUsers() {
 
 // Store Users array in Local Storage
 function addNewUserInLocalStorage(newUser) {
-  // let users;
   // check if there are users stored in local storage
   if (localStorage.getItem("users") === null) {
-    // if none, set task to none
+    // if none, set task to empty array
     users = [];
   } else {
     // if there are users, convert it to array
@@ -439,7 +412,7 @@ function getCurrentDateTime() {
 function listUsers() {
   // check if there are users stored in local storage
   if (localStorage.getItem("users") === null) {
-    // if none, set task to none
+    // if none, set task to empty array
     users = [];
   } else {
     // if there are users, convert it to array
@@ -465,13 +438,6 @@ function listUsers() {
     );
   });
 }
-
-// User Constructor
-let User = function (user, balance, history = undefined) {
-  this.user = user;
-  this.balance = balance;
-  this.history = [];
-};
 
 // set empty array in each user object to store the logs
 // each of the 3 main functions (withdraw, deposit, send) should have a push to the array that records the action and the computer timestamp

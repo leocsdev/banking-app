@@ -43,10 +43,6 @@ body {
   opacity: 0.9;
 }
 
-.navbar .navbar-brand {
-  /* padding: 1rem 0; */
-}
-
 .navbar .navbar-nav .nav-link {
   color: #2d314d;
   transition: 0.2s ease-in;
@@ -140,10 +136,6 @@ body {
 /* Index Page - END */
 
 /* Admin Page */
-#bodyAdmin {
-  overflow: hidden;
-}
-
 #admin {
   height: 100vh;
 
@@ -159,7 +151,6 @@ body {
 #admin .topbar {
   grid-area: topbar;
   background-color: #c8c7cd;
-  /* background-image: linear-gradient(to right, #41dc65, #3ec3d5); */
 }
 
 #admin .sidebar {
@@ -170,9 +161,10 @@ body {
 
 #admin .main {
   grid-area: main;
-  /* background-color: #e1e0e6; */
+  overflow: auto;
 }
 
 #admin .main .modal-error {
   display: none;
 }
+/* Admin Page - END */
