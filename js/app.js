@@ -74,7 +74,7 @@ function createUser(e) {
 
   if (!lettersOnly(user)) {
     e.preventDefault();
-    return alert()`Only letters are allowed in user.`;
+    return alert(`Only letters are allowed in user.`);
   }
 
   if (!numbersOnly(amount)) {
