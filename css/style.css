@@ -31,7 +31,7 @@ body {
   font-family: "Public Sans", sans-serif;
   color: #23273c;
 
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .container {
@@ -46,7 +46,7 @@ body {
 }
 
 .navbar .navbar-brand {
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
 }
 
 .navbar .navbar-nav .nav-link {
@@ -142,3 +142,22 @@ body {
 /* Index Page - END */
 
 /* Admin Page */
+#admin {
+  height: 100vh;
+}
+
+#admin .topbar {
+  background-color: green;
+}
+
+#admin .sidebar {
+  background-color: blue;
+}
+
+#admin .main {
+  background-color: cadetblue;
+}
+
+#admin .footer {
+  background-color: darkgrey;
+}
