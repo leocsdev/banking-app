@@ -1,23 +1,23 @@
-// VARS AND UIs DOMs
-const userList = document.getElementById("userList");
-
-// Create User DOMs
-const formCreateUser = document.getElementById("formCreateUser");
-const inputCreateUser = document.getElementById("createUser");
-const inputCreateUserAmount = document.getElementById("createUserAmount");
-
-// Modal Error DOM
-const modalError = document.querySelector(".modal-error");
-
 // GLOBAL VARS
-// let user;
-// let amount;
-//
 const user_already_exists = "User already exists.";
 const user_does_not_exists = "User does not exist.";
 const not_enough_money = "User's balance is insufficient.";
 const sender_does_not_exists = "Sender does not exists.";
 const receiver_does_not_exists = "Receiver does not exists.";
+const only_letters_allowed = "Only letters are allowed in user.";
+const only_numbers_allowed = "Only numbers are allowed in amount.";
+const cannot_be_negative = "Amount cannot be negative.";
+
+// VARS AND UIs DOMs
+const userList = document.getElementById("userList");
+
+// Create User DOMs
+const formCreateUser = document.getElementById("formCreateUser");
+const inputCreateUser = document.getElementById("inputCreateUser");
+const inputCreateUserAmount = document.getElementById("inputCreateUserAmount");
+const modalErrorCreateUser = document.getElementById("modalErrorCreateUser");
+
+// Deposit DOMs
 
 // LOAD ALL EVENT LISTENERS WHEN APP LOADS
 loadEventListeners();
@@ -31,43 +31,24 @@ function loadEventListeners() {
 }
 
 // FUNCTIONS
-// Error Message
-function showModalError(error) {
-  modalError.style.display = "block";
-
-  modalError.innerHTML = `
-  <p class="text-danger text-center mt-3 mb-0">${error}</p>
-  `;
-
-  setTimeout(clearError, 3000);
-}
-
-function clearError() {
-  modalError.style.display = "none";
-}
-
 // Create new user
 function createUser(e) {
   let user = inputCreateUser.value;
   let amount = inputCreateUserAmount.value;
 
   if (userExist(user)) {
-    // return `User already exists`;
     e.preventDefault();
-    // return alert(user_already_exists);
-    return showModalError(user_already_exists);
+    return showModalError(modalErrorCreateUser, user_already_exists);
   }
 
   if (!lettersOnly(user)) {
     e.preventDefault();
-    // return alert(`Only letters are allowed in user.`);
-    return showModalError("Only letters are allowed in user.");
+    return showModalError(modalErrorCreateUser, only_letters_allowed);
   }
 
   if (!numbersOnly(amount)) {
     e.preventDefault();
-    // return alert(`Only numbers are allowed in amount.`);
-    return showModalError("Only numbers are allowed in amount.");
+    return showModalError(modalErrorCreateUser, only_numbers_allowed);
   }
   if (amount >= 0) {
     amount = parseFloat(amount);
@@ -80,96 +61,9 @@ function createUser(e) {
     return alert(`User ${user} added.`);
   } else {
     e.preventDefault();
-    // return alert(`Amount cannot be negative.`);
-    return showModalError("Amount cannot be negative.");
+    return showModalError(modalErrorCreateUser, cannot_be_negative);
   }
 }
-
-// Load tasks once the page is loaded
-function getUsers() {
-  // let users;
-  // check if there are users stored in local storage
-  if (localStorage.getItem("users") === null) {
-    // if none, set task to none
-    users = [];
-  } else {
-    // if there are users, convert it to array
-    users = JSON.parse(localStorage.getItem("users"));
-  }
-
-  listUsers();
-}
-
-// Store Users array in Local Storage
-function addNewUserInLocalStorage(newUser) {
-  // let users;
-  // check if there are users stored in local storage
-  if (localStorage.getItem("users") === null) {
-    // if none, set task to none
-    users = [];
-  } else {
-    // if there are users, convert it to array
-    users = JSON.parse(localStorage.getItem("users"));
-  }
-
-  // and add the new task
-  users.push(newUser);
-  // convert users to string and set it back to localStorage
-  localStorage.setItem("users", JSON.stringify(users));
-}
-
-// for timestamp
-function getCurrentDateTime() {
-  let now = new Date();
-
-  let dateStr = now.toDateString();
-  let hour = now.getHours();
-  let minute = now.getMinutes();
-  let second = now.getSeconds();
-
-  // append 0 before minute and second vars, if their digit is 0 to 9
-  minute = (minute < 10 ? "0" : "") + minute;
-  second = (second < 10 ? "0" : "") + second;
-
-  return `${dateStr}, ${hour}:${minute}:${second}`;
-}
-
-function listUsers() {
-  // check if there are users stored in local storage
-  if (localStorage.getItem("users") === null) {
-    // if none, set task to none
-    users = [];
-  } else {
-    // if there are users, convert it to array
-    users = JSON.parse(localStorage.getItem("users"));
-  }
-
-  if (!users.length) {
-    return `No users exist.`;
-  }
-
-  users.forEach((user) => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td class="pl-5">${user.user}</td>
-      <td>${balanceFormatter(user.balance)}</td>
-    `;
-
-    userList.appendChild(tr);
-
-    console.log(
-      `User: ${user.user}, Balance: ${balanceFormatter(user.balance)}`
-    );
-  });
-}
-
-// User Constructor
-let User = function (user, balance, history = undefined) {
-  this.user = user;
-  this.balance = balance;
-  this.history = [];
-};
 
 function deposit(user = "", amount = 0) {
   if (!userExist(user)) {
@@ -393,14 +287,6 @@ function balanceFormatter(amount) {
   return `Php ${amount}`;
 }
 
-// set empty array in each user object to store the logs
-// each of the 3 main functions (withdraw, deposit, send) should have a push to the array that records the action and the computer timestamp
-// for send, both to and from account should get a log
-// push the log at the end of array, but when displaying, show the last one first by looping through it
-
-// create search users function
-// loop through all objects and return user name values then match it with the user's input
-
 function search(input) {
   input = prompt("Find a user:");
   for (let i = 0; i < users.length; i++) {
@@ -413,3 +299,110 @@ function search(input) {
     }
   }
 }
+
+// Error Message
+function showModalError(modalErrorDOM, errorMsg) {
+  modalErrorDOM.style.display = "block";
+
+  modalErrorDOM.innerHTML = `
+  <p class="text-danger text-center mt-3 mb-0">${errorMsg}</p>
+  `;
+
+  setTimeout(function () {
+    modalErrorDOM.style.display = "none";
+  }, 3000);
+}
+
+// Load tasks once the page is loaded
+function getUsers() {
+  // let users;
+  // check if there are users stored in local storage
+  if (localStorage.getItem("users") === null) {
+    // if none, set task to none
+    users = [];
+  } else {
+    // if there are users, convert it to array
+    users = JSON.parse(localStorage.getItem("users"));
+  }
+
+  listUsers();
+}
+
+// Store Users array in Local Storage
+function addNewUserInLocalStorage(newUser) {
+  // let users;
+  // check if there are users stored in local storage
+  if (localStorage.getItem("users") === null) {
+    // if none, set task to none
+    users = [];
+  } else {
+    // if there are users, convert it to array
+    users = JSON.parse(localStorage.getItem("users"));
+  }
+
+  // and add the new task
+  users.push(newUser);
+  // convert users to string and set it back to localStorage
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
+// for timestamp
+function getCurrentDateTime() {
+  let now = new Date();
+
+  let dateStr = now.toDateString();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+  let second = now.getSeconds();
+
+  // append 0 before minute and second vars, if their digit is 0 to 9
+  minute = (minute < 10 ? "0" : "") + minute;
+  second = (second < 10 ? "0" : "") + second;
+
+  return `${dateStr}, ${hour}:${minute}:${second}`;
+}
+
+function listUsers() {
+  // check if there are users stored in local storage
+  if (localStorage.getItem("users") === null) {
+    // if none, set task to none
+    users = [];
+  } else {
+    // if there are users, convert it to array
+    users = JSON.parse(localStorage.getItem("users"));
+  }
+
+  if (!users.length) {
+    return `No users exist.`;
+  }
+
+  users.forEach((user) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td class="pl-5">${user.user}</td>
+      <td>${balanceFormatter(user.balance)}</td>
+    `;
+
+    userList.appendChild(tr);
+
+    console.log(
+      `User: ${user.user}, Balance: ${balanceFormatter(user.balance)}`
+    );
+  });
+}
+
+// User Constructor
+let User = function (user, balance, history = undefined) {
+  this.user = user;
+  this.balance = balance;
+  this.history = [];
+};
+
+// set empty array in each user object to store the logs
+// each of the 3 main functions (withdraw, deposit, send) should have a push to the array that records the action and the computer timestamp
+// for send, both to and from account should get a log
+// push the log at the end of array, but when displaying, show the last one first by looping through it
+
+// create search users function
+// loop through all objects and return user name values then match it with the user's input
