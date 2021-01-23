@@ -44,7 +44,11 @@ function loadEventListeners() {
 
   document.addEventListener("DOMContentLoaded", getUsers);
 
-  formCreateUser.addEventListener("submit", createUser);
+  formCreateUser.addEventListener("submit", function (e) {
+    let user = inputCreateUser.value;
+    let amount = inputCreateUserAmount.value;
+    createUser(user, amount, e);
+  });
 
   formDeposit.addEventListener("submit", deposit);
 
@@ -55,9 +59,9 @@ function loadEventListeners() {
 
 // FUNCTIONS
 // Create new user
-function createUser(e) {
-  let user = inputCreateUser.value;
-  let amount = inputCreateUserAmount.value;
+function createUser(user, amount, e) {
+  // let user = inputCreateUser.value;
+  // let amount = inputCreateUserAmount.value;
 
   if (userExist(user)) {
     e.preventDefault();
