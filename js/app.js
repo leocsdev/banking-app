@@ -57,7 +57,11 @@ function loadEventListeners() {
     deposit(user, amount, e);
   });
 
-  formWithdraw.addEventListener("submit", withdraw);
+  formWithdraw.addEventListener("submit", function (e) {
+    let user = inputWithdrawUser.value;
+    let amount = inputWithdrawAmount.value;
+    withdraw(user, amount, e);
+  });
 
   formSend.addEventListener("submit", send);
 }
@@ -159,9 +163,9 @@ function deposit(user, amount, e) {
 }
 
 // Withdraw amount from user
-function withdraw(e) {
-  let user = inputWithdrawUser.value;
-  let amount = inputWithdrawAmount.value;
+function withdraw(user, amount, e) {
+  // let user = inputWithdrawUser.value;
+  // let amount = inputWithdrawAmount.value;
 
   if (!userExist(user)) {
     // return `User does not exist.`;
