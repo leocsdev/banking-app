@@ -15,11 +15,9 @@ const userList = document.getElementById("userList");
 const modalErrorCreateUser = document.getElementById("modalErrorCreateUser");
 const formCreateUser = document.getElementById("formCreateUser");
 const inputCreateUsername = document.getElementById("inputCreateUsername");
-const inputCreateUserFirstName = document.getElementById(
-  "inputCreateUserFirstName"
-);
-const inputCreateUserLastName = document.getElementById(
-  "inputCreateUserLastName"
+
+const inputCreateUserFullName = document.getElementById(
+  "inputCreateUserFullName"
 );
 
 const inputCreateUserAmount = document.getElementById("inputCreateUserAmount");
@@ -50,6 +48,13 @@ const modalErrorSearchByUser = document.getElementById(
 const formSearchByUser = document.getElementById("formSearchByUser");
 const inputSearchByUser = document.getElementById("inputSearchByUser");
 
+// Search By Full Name DOMs
+const modalErrorSearchByFullName = document.getElementById(
+  "modalErrorSearchByFullName"
+);
+const formSearchByFullName = document.getElementById("formSearchByFullName");
+const inputSearchByFullName = document.getElementById("inputSearchByFullName");
+
 // LOAD ALL EVENT LISTENERS WHEN APP LOADS
 loadEventListeners();
 
@@ -60,8 +65,7 @@ function loadEventListeners() {
 
   formCreateUser.addEventListener("submit", function (e) {
     let username = inputCreateUsername.value;
-    let fullName =
-      inputCreateUserFirstName.value + " " + inputCreateUserLastName.value;
+    let fullName = inputCreateUserFullName.value;
     let amount = inputCreateUserAmount.value;
 
     createUser(username, fullName, amount, e);
@@ -93,6 +97,12 @@ function loadEventListeners() {
     let user = inputSearchByUser.value;
 
     search(user, e);
+  });
+
+  formSearchByFullName.addEventListener("submit", function (e) {
+    let fullName = inputSearchByFullName.value;
+
+    searchFullName(fullName, e);
   });
 }
 
@@ -447,6 +457,30 @@ function search(user, e) {
       // return user_does_not_exists;
       e.preventDefault();
       return showModalError(modalErrorSearchByUser, user_does_not_exists);
+    }
+  }
+}
+
+function searchFullName(fullName, e) {
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].fullName.includes(fullName)) {
+      if (users[i].fullName.toLowerCase() == fullName.toLowerCase()) {
+        e.preventDefault();
+
+        // listUserHistory(users, i);
+
+        console.log(users[i].fullName);
+
+        // return users[i];
+
+        // console.log(users[i]);
+        // listUserHistory(users, i);
+        // return users[i];
+      }
+    } else {
+      // return user_does_not_exists;
+      e.preventDefault();
+      // return showModalError(modalErrorSearchByFullName, user_does_not_exists);
     }
   }
 }

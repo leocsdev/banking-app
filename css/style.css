@@ -136,10 +136,10 @@ body {
 /* Index Page - END */
 
 /* Admin Page */
-#adminBody {
-  /* overflow: hidden; */
-  /* height: 92vh; */
-}
+/* #adminBody { */
+/* overflow: hidden; */
+/* height: 92vh; */
+/* } */
 nav.topbar {
   background-color: #c8c7cd;
   height: 75px;
