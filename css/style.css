@@ -158,6 +158,20 @@ nav.topbar {
   color: #fff;
   width: 250px;
   flex-shrink: 0;
+  padding: 1rem;
+}
+
+#admin .sidebar ul {
+  list-style: none;
+}
+
+#admin .sidebar ul li {
+  margin: 2rem 0;
+}
+
+#admin .sidebar ul li button {
+  width: 100%;
+  padding: 1rem 0;
 }
 
 #admin .main {
