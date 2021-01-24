@@ -70,7 +70,7 @@
             <button
               class="btn btn-info"
               data-toggle="modal"
-              data-target="#searchByNameModal"
+              data-target="#searchByUserModal"
             >
               Search User
             </button>
@@ -90,6 +90,24 @@
                 </tr>
               </thead>
               <tbody class="user-list" id="userList"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="userHistory" class="h-100">
+          <h2 class="text-center my-4">Leo's Account</h2>
+          <div class="table-list">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="pl-5" scope="col">Transaction History</th>
+                </tr>
+              </thead>
+              <tbody class="user-list" id="userHistoryData">
+                <tr>
+                  <td>Credited Php 100.00 on Sun Jan 24 2021, 12:39:14</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -284,6 +302,44 @@
                   <input
                     type="submit"
                     value="SEND"
+                    class="btn btn-success btn-block"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEARCH BY USER MODAL -->
+        <div class="modal fade text-dark" id="searchByUserModal">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">SEARCH USER</h5>
+                <button class="close" data-dismiss="modal">
+                  <span>&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-error" id="modalErrorSearchByUser"></div>
+
+              <form id="formWithdraw">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="inputSearchByUser">User</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputSearchByUser"
+                      placeholder="Enter User"
+                    />
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <input
+                    type="submit"
+                    value="SEARCH"
                     class="btn btn-success btn-block"
                   />
                 </div>
