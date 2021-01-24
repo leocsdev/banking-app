@@ -36,6 +36,13 @@ const inputWithdrawFrom = document.getElementById("inputWithdrawFrom");
 const inputDepositTo = document.getElementById("inputDepositTo");
 const inputTransferAmount = document.getElementById("inputTransferAmount");
 
+// Search By User DOMs
+const modalErrorSearchByUser = document.getElementById(
+  "modalErrorSearchByUser"
+);
+const formSearchByUser = document.getElementById("formSearchByUser");
+const inputSearchByUser = document.getElementById("inputSearchByUser");
+
 // LOAD ALL EVENT LISTENERS WHEN APP LOADS
 loadEventListeners();
 
@@ -71,6 +78,12 @@ function loadEventListeners() {
     let amount = inputTransferAmount.value;
 
     send(from, to, amount, e);
+  });
+
+  formSearchByUser.addEventListener("submit", function (e) {
+    let user = inputSearchByUser.value;
+
+    search(user, e);
   });
 }
 
@@ -336,17 +349,49 @@ function balanceFormatter(amount) {
   return `Php ${amount}`;
 }
 
-function search(input) {
-  input = prompt("Find a user:");
+// function search(input) {
+//   input = prompt("Find a user:");
+//   for (let i = 0; i < users.length; i++) {
+//     if (userExist(input)) {
+//       if (users[i].user.toLowerCase() == input.toLowerCase()) {
+//         return users[i];
+//       }
+//     } else {
+//       return user_does_not_exists;
+//     }
+//   }
+// }
+
+function search(user, e) {
   for (let i = 0; i < users.length; i++) {
-    if (userExist(input)) {
-      if (users[i].user.toLowerCase() == input.toLowerCase()) {
+    if (userExist(user)) {
+      if (users[i].user.toLowerCase() == user.toLowerCase()) {
+        e.preventDefault();
+
+        // console.log(users[i]);
+        listUserHistory(users, i);
+
         return users[i];
       }
     } else {
-      return user_does_not_exists;
+      // return user_does_not_exists;
+      e.preventDefault();
+      return showModalError(modalErrorSearchByUser, user_does_not_exists);
     }
   }
+}
+
+function listUserHistory(usersArr, index) {
+  //
+  let userHistory = usersArr[index];
+
+  console.log(`------------------------`);
+  console.log(`Transaction history for ${userHistory.user}`);
+
+  for (i = 0; i < userHistory.history.length; i++) {
+    console.log(userHistory.history[i]);
+  }
+  console.log(`------------------------`);
 }
 
 // Error Message
