@@ -142,7 +142,14 @@ body {
 }
 nav.topbar {
   background-color: #c8c7cd;
-  height: 80px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav.topbar h1 {
+  margin: 0;
 }
 
 #admin.admin {
