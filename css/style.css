@@ -136,32 +136,40 @@ body {
 /* Index Page - END */
 
 /* Admin Page */
-#admin {
+#adminBody {
+  overflow: hidden;
   height: 100vh;
-
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 3rem 1fr;
-  grid-template-areas:
-    "sidebar topbar topbar topbar"
-    "sidebar main main main"
-    "sidebar main main main";
+}
+nav.topbar {
+  background-color: #c8c7cd;
+  height: 80px;
 }
 
-#admin .topbar {
-  grid-area: topbar;
-  background-color: #c8c7cd;
+#admin.admin {
+  height: 100%;
+
+  display: flex;
+
+  padding: 0;
 }
 
 #admin .sidebar {
   background-color: #23273c;
-  grid-area: sidebar;
   color: #fff;
+  width: 250px;
+  flex-shrink: 0;
 }
 
 #admin .main {
-  grid-area: main;
   overflow: auto;
+  flex-grow: 1;
+}
+
+#admin .main table thead th {
+  background: white;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
 #admin .main .modal-error {

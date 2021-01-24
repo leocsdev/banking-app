@@ -20,19 +20,21 @@
 
     <title>Bankoto</title>
   </head>
-  <body id="bodyAdmin">
-    <div class="admin" id="admin">
-      <div class="topbar">Bankoto</div>
+  <body id="adminBody">
+    <nav class="topbar">Bankoto</nav>
 
-      <div class="sidebar">
+    <main class="admin container" id="admin">
+      <section class="sidebar">
         Dashboard
         <ul>
-          <li
-            class="btn btn-success"
-            data-toggle="modal"
-            data-target="#createUserModal"
-          >
-            Create User
+          <li>
+            <button
+              class="btn btn-success"
+              data-toggle="modal"
+              data-target="#createUserModal"
+            >
+              Create User
+            </button>
           </li>
           <li>
             <button
@@ -64,10 +66,10 @@
         </ul>
 
         <div class="side-footer">Footer Here</div>
-      </div>
+      </section>
 
-      <main class="main">
-        <section id="userslist" class="h-100">
+      <section class="main">
+        <div id="userslist" class="h-100">
           <h2 class="text-center my-4">Users List</h2>
           <div class="table-list">
             <table class="table table-striped">
@@ -80,7 +82,7 @@
               <tbody class="user-list" id="userList"></tbody>
             </table>
           </div>
-        </section>
+        </div>
 
         <!-- CREATE USER MODAL -->
         <div class="modal fade text-dark" id="createUserModal">
@@ -279,8 +281,8 @@
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
