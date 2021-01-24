@@ -93,16 +93,27 @@ function loadEventListeners() {
 function createUser(user, amount, e) {
   if (userExist(user)) {
     e.preventDefault();
+
+    inputCreateUser.value = "";
+    inputCreateUserAmount.value = "";
+
     return showModalError(modalErrorCreateUser, user_already_exists);
   }
 
   if (!lettersOnly(user)) {
     e.preventDefault();
+
+    inputCreateUser.value = "";
+    inputCreateUserAmount.value = "";
+
     return showModalError(modalErrorCreateUser, only_letters_allowed);
   }
 
   if (!numbersOnly(amount)) {
     e.preventDefault();
+
+    inputCreateUserAmount.value = "";
+
     return showModalError(modalErrorCreateUser, only_numbers_allowed);
   }
   if (amount >= 0) {
@@ -114,9 +125,15 @@ function createUser(user, amount, e) {
 
     listUsers();
 
+    // user = "";
+    // amount = "";
+
     return alert(`User ${user} added.`);
   } else {
     e.preventDefault();
+
+    inputCreateUserAmount.value = "";
+
     return showModalError(modalErrorCreateUser, cannot_be_negative);
   }
 }
