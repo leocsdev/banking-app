@@ -14,7 +14,14 @@ const userList = document.getElementById("userList");
 // Create User DOMs
 const modalErrorCreateUser = document.getElementById("modalErrorCreateUser");
 const formCreateUser = document.getElementById("formCreateUser");
-const inputCreateUser = document.getElementById("inputCreateUser");
+const inputCreateUsername = document.getElementById("inputCreateUsername");
+const inputCreateUserFirstName = document.getElementById(
+  "inputCreateUserFirstName"
+);
+const inputCreateUserLastName = document.getElementById(
+  "inputCreateUserLastName"
+);
+
 const inputCreateUserAmount = document.getElementById("inputCreateUserAmount");
 
 // Deposit DOMs
@@ -52,10 +59,12 @@ function loadEventListeners() {
   document.addEventListener("DOMContentLoaded", getUsers);
 
   formCreateUser.addEventListener("submit", function (e) {
-    let user = inputCreateUser.value;
+    let username = inputCreateUsername.value;
+    let fullName =
+      inputCreateUserFirstName.value + " " + inputCreateUserLastName.value;
     let amount = inputCreateUserAmount.value;
 
-    createUser(user, amount, e);
+    createUser(username, fullName, amount, e);
   });
 
   formDeposit.addEventListener("submit", function (e) {
@@ -90,11 +99,11 @@ function loadEventListeners() {
 // FUNCTIONS
 
 // Create new user
-function createUser(user, amount, e) {
+function createUser(user, fullName, amount, e) {
   if (userExist(user)) {
     e.preventDefault();
 
-    inputCreateUser.value = "";
+    inputCreateUsername.value = "";
     inputCreateUserAmount.value = "";
 
     return showModalError(modalErrorCreateUser, user_already_exists);
@@ -103,7 +112,7 @@ function createUser(user, amount, e) {
   if (!lettersOnly(user)) {
     e.preventDefault();
 
-    inputCreateUser.value = "";
+    inputCreateUsername.value = "";
     inputCreateUserAmount.value = "";
 
     return showModalError(modalErrorCreateUser, only_letters_allowed);
@@ -119,9 +128,21 @@ function createUser(user, amount, e) {
   if (amount >= 0) {
     amount = parseFloat(amount);
 
-    let newUser = new User(user, amount);
+    let newUser = new User(user, fullName, amount);
 
     addNewUserInLocalStorage(newUser);
+
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].user.toLowerCase() == user.toLowerCase()) {
+        users[i].history.push(
+          `Account created with initial balance of ${balanceFormatter(
+            amount
+          )} on ${getCurrentDateTime()}`
+        );
+      }
+    }
+
+    localStorage.setItem("users", JSON.stringify(users));
 
     listUsers();
 
@@ -332,8 +353,9 @@ function send(from, to, amount, e) {
 // UTILITY FUNCTIONS
 
 // User Constructor
-let User = function (user, balance, history = undefined) {
+let User = function (user, fullName, balance, history = undefined) {
   this.user = user;
+  this.fullName = fullName;
   this.balance = balance;
   this.history = [];
 };
@@ -409,19 +431,6 @@ function balanceFormatter(amount) {
   amount = amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return `Php ${amount}`;
 }
-
-// function search(input) {
-//   input = prompt("Find a user:");
-//   for (let i = 0; i < users.length; i++) {
-//     if (userExist(input)) {
-//       if (users[i].user.toLowerCase() == input.toLowerCase()) {
-//         return users[i];
-//       }
-//     } else {
-//       return user_does_not_exists;
-//     }
-//   }
-// }
 
 function search(user, e) {
   for (let i = 0; i < users.length; i++) {
@@ -534,6 +543,7 @@ function listUsers() {
 
     tr.innerHTML = `
       <td class="pl-5">${user.user}</td>
+      <td>${user.fullName}</td>
       <td>${balanceFormatter(user.balance)}</td>
     `;
 
