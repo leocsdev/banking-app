@@ -125,9 +125,6 @@ function createUser(user, amount, e) {
 
     listUsers();
 
-    // user = "";
-    // amount = "";
-
     return alert(`User ${user} added.`);
   } else {
     e.preventDefault();
@@ -142,11 +139,18 @@ function createUser(user, amount, e) {
 function deposit(user, amount, e) {
   if (!userExist(user)) {
     e.preventDefault();
+
+    inputDepositUser.value = "";
+    inputDepositAmount.value = "";
+
     return showModalError(modalErrorDeposit, user_does_not_exists);
   }
 
   if (!numbersOnly(amount)) {
     e.preventDefault();
+
+    inputDepositAmount.value = "";
+
     return showModalError(modalErrorDeposit, only_numbers_allowed);
   }
 
@@ -186,6 +190,9 @@ function deposit(user, amount, e) {
     }
   } else {
     e.preventDefault();
+
+    inputDepositAmount.value = "";
+
     return showModalError(modalErrorDeposit, cannot_be_negative);
   }
 }
@@ -194,11 +201,18 @@ function deposit(user, amount, e) {
 function withdraw(user, amount, e) {
   if (!userExist(user)) {
     e.preventDefault();
+
+    inputWithdrawUser.value = "";
+    inputWithdrawAmount.value = "";
+
     return showModalError(modalErrorWithdraw, user_does_not_exists);
   }
 
   if (!numbersOnly(amount)) {
     e.preventDefault();
+
+    inputWithdrawAmount.value = "";
+
     return showModalError(modalErrorWithdraw, only_numbers_allowed);
   }
 
@@ -234,12 +248,18 @@ function withdraw(user, amount, e) {
           return users[i].balance;
         } else {
           e.preventDefault();
+
+          inputWithdrawAmount.value = "";
+
           return showModalError(modalErrorWithdraw, not_enough_money);
         }
       }
     }
   } else {
     e.preventDefault();
+
+    inputWithdrawAmount.value = "";
+
     return showModalError(modalErrorWithdraw, cannot_be_negative);
   }
 }
@@ -247,16 +267,31 @@ function withdraw(user, amount, e) {
 function send(from, to, amount, e) {
   if (!userExist(from)) {
     e.preventDefault();
+
+    inputWithdrawFrom.value = "";
+    inputDepositTo.value = "";
+    inputTransferAmount.value = "";
+
     return showModalError(modalErrorSend, sender_does_not_exists);
   }
 
   if (!userExist(to)) {
     e.preventDefault();
+
+    inputWithdrawFrom.value = "";
+    inputDepositTo.value = "";
+    inputTransferAmount.value = "";
+
     return showModalError(modalErrorSend, receiver_does_not_exists);
   }
 
   if (from.toLowerCase() == to.toLowerCase()) {
     e.preventDefault();
+
+    inputWithdrawFrom.value = "";
+    inputDepositTo.value = "";
+    inputTransferAmount.value = "";
+
     return showModalError(
       modalErrorSend,
       "Sender cannot be the same as receiver."
@@ -265,6 +300,9 @@ function send(from, to, amount, e) {
 
   if (!numbersOnly(amount)) {
     e.preventDefault();
+
+    inputTransferAmount.value = "";
+
     return showModalError(modalErrorSend, only_numbers_allowed);
   }
 
@@ -277,10 +315,16 @@ function send(from, to, amount, e) {
       return listUsers();
     } else {
       e.preventDefault();
+
+      inputTransferAmount.value = "";
+
       return showModalError(modalErrorSend, not_enough_money);
     }
   } else {
     e.preventDefault();
+
+    inputTransferAmount.value = "";
+
     return showModalError(modalErrorSend, cannot_be_negative);
   }
 }
