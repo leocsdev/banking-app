@@ -95,7 +95,7 @@ body {
   margin-bottom: 4rem;
 }
 
-.card {
+header .row .card {
   background-color: #2d314d;
 
   background-image: linear-gradient(to right, #41dc65, #3ec3d5);
@@ -136,10 +136,16 @@ body {
 /* Index Page - END */
 
 /* Admin Page */
-/* #adminBody { */
-/* overflow: hidden; */
-/* height: 92vh; */
-/* } */
+/* #adminBody {
+  position: relative;
+} */
+
+/* #adminBody .custom-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+} */
+
 nav.topbar {
   background-color: #c8c7cd;
   height: 75px;
@@ -184,6 +190,7 @@ nav.topbar h1 {
 #admin .main {
   flex-grow: 1;
   border-right: 1px solid #a5a5a5;
+  border-bottom: 1px solid #a5a5a5;
 }
 
 #admin .main table thead th {
@@ -196,4 +203,9 @@ nav.topbar h1 {
 #admin .main .modal-error {
   display: none;
 }
+
+#admin .main .user-history {
+  display: none;
+}
+
 /* Admin Page - END */

@@ -9,7 +9,12 @@ const only_numbers_allowed = "Only numbers are allowed in amount.";
 const cannot_be_negative = "Amount cannot be negative.";
 
 // Display DOMs
+const userslist = document.getElementById("userslist");
 const userList = document.getElementById("userList");
+const displayUserHistory = document.getElementById("displayUserHistory");
+const displayUserHistoryData = document.getElementById(
+  "displayUserHistoryData"
+);
 
 // Create User DOMs
 const modalErrorCreateUser = document.getElementById("modalErrorCreateUser");
@@ -128,6 +133,18 @@ function createUser(user, fullName, amount, e) {
     return showModalError(modalErrorCreateUser, only_letters_allowed);
   }
 
+  if (!lettersSpaceOnly(fullName)) {
+    e.preventDefault();
+
+    inputCreateUserFullName.value = "";
+    inputCreateUserAmount.value = "";
+
+    return showModalError(
+      modalErrorCreateUser,
+      `Only letters allowed in Full Name.`
+    );
+  }
+
   if (!numbersOnly(amount)) {
     e.preventDefault();
 
@@ -154,9 +171,9 @@ function createUser(user, fullName, amount, e) {
 
     localStorage.setItem("users", JSON.stringify(users));
 
-    listUsers();
-
-    // return alert(`User ${user} added.`);
+    // e.preventDefault();
+    console.log(`User ${fullName} added.`);
+    alert(`User ${fullName} added.`);
   } else {
     e.preventDefault();
 
@@ -214,7 +231,13 @@ function deposit(user, amount, e) {
         // convert users array to string before displaying users list in DOM
         localStorage.setItem("users", JSON.stringify(users));
 
-        listUsers();
+        // e.preventDefault();
+
+        alert(
+          `New balance for ${users[i].user} is ${balanceFormatter(
+            users[i].balance
+          )} after deposit.`
+        );
 
         return users[i].balance;
       }
@@ -275,6 +298,14 @@ function withdraw(user, amount, e) {
 
           // convert users array to string before displaying users list in DOM
           localStorage.setItem("users", JSON.stringify(users));
+
+          // e.preventDefault();
+
+          alert(
+            `New balance for ${users[i].user} is ${balanceFormatter(
+              users[i].balance
+            )} after withdrawal.`
+          );
 
           return users[i].balance;
         } else {
@@ -343,7 +374,8 @@ function send(from, to, amount, e) {
       let balanceFrom = withdraw(from, amount);
       let balanceTo = deposit(to, amount);
 
-      return listUsers();
+      // return listUsers();
+      return;
     } else {
       e.preventDefault();
 
@@ -397,6 +429,7 @@ function userExist(user) {
   }
 }
 
+// Allow letters only
 function lettersOnly(word) {
   // Allow letters only
   let allowedLetters = /^[A-Za-z]+$/;
@@ -410,6 +443,21 @@ function lettersOnly(word) {
   }
 }
 
+// Allow letters, spaces, and dots
+function lettersSpaceOnly(word) {
+  // Allow letters only
+  let allowedLetters = /^[A-Za-z .]+$/;
+
+  let wordStr = word.toString();
+
+  if (wordStr.match(allowedLetters)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Allow numbers only
 function numbersOnly(number) {
   // Allow numbers and one dot only
   let allowedNumbers = /^(\-)?\d+(\.\d+)?$/;
@@ -447,11 +495,7 @@ function search(user, e) {
     if (userExist(user)) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         e.preventDefault();
-
-        // console.log(users[i]);
         listUserHistory(users, i);
-
-        return users[i];
       }
     } else {
       // return user_does_not_exists;
@@ -459,6 +503,40 @@ function search(user, e) {
       return showModalError(modalErrorSearchByUser, user_does_not_exists);
     }
   }
+}
+
+function listUserHistory(usersArr, index) {
+  let userFullName = usersArr[index].fullName;
+  let userHistory = usersArr[index].history;
+
+  userslist.style.display = "none";
+  displayUserHistory.style.display = "block";
+
+  // grab displayUserTableList
+  const displayUserTableList = document.getElementById("displayUserTableList");
+  // create h2 element
+  const h2 = document.createElement("h2");
+
+  // add classes to h2
+  h2.className = "text-center my-4";
+
+  // Append User's fullname to h2
+  h2.appendChild(document.createTextNode(`${userFullName}'s Account`));
+
+  // insert h2 after displayUserHistory
+  displayUserHistory.insertBefore(h2, displayUserTableList);
+
+  userHistory.forEach((history) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+    <td class="pl-5">${history}</td>
+    `;
+
+    displayUserHistoryData.appendChild(tr);
+
+    console.log(history);
+  });
 }
 
 function searchFullName(fullName, e) {
@@ -483,19 +561,6 @@ function searchFullName(fullName, e) {
       // return showModalError(modalErrorSearchByFullName, user_does_not_exists);
     }
   }
-}
-
-function listUserHistory(usersArr, index) {
-  //
-  let userHistory = usersArr[index];
-
-  console.log(`------------------------`);
-  console.log(`Transaction history for ${userHistory.user}`);
-
-  for (i = 0; i < userHistory.history.length; i++) {
-    console.log(userHistory.history[i]);
-  }
-  console.log(`------------------------`);
 }
 
 // Error Message
@@ -587,7 +652,9 @@ function listUsers() {
     userList.appendChild(tr);
 
     console.log(
-      `User: ${user.user}, Balance: ${balanceFormatter(user.balance)}`
+      `Username: ${user.user}, Full Name: ${
+        user.fullName
+      }, Balance: ${balanceFormatter(user.balance)}`
     );
   });
 }

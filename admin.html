@@ -72,7 +72,7 @@
               data-toggle="modal"
               data-target="#searchByUserModal"
             >
-              Search User
+              Search Username
             </button>
           </li>
           <li>
@@ -106,20 +106,16 @@
           </div>
         </div>
 
-        <div id="userHistory" class="h-100">
-          <h2 class="text-center my-4">Leo's Account</h2>
-          <div class="table-list">
+        <div id="displayUserHistory" class="user-history h-100">
+          <!-- <h2 class="text-center my-4">Leo's Account</h2> -->
+          <div id="displayUserTableList" class="table-list">
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th class="pl-5" scope="col">Transaction History</th>
                 </tr>
               </thead>
-              <tbody class="user-list" id="userHistoryData">
-                <tr>
-                  <td>Credited Php 100.00 on Sun Jan 24 2021, 12:39:14</td>
-                </tr>
-              </tbody>
+              <tbody class="user-list" id="displayUserHistoryData"></tbody>
             </table>
           </div>
         </div>
@@ -341,7 +337,7 @@
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">SEARCH USER</h5>
+                <h5 class="modal-title">SEARCH USERNAME</h5>
                 <button class="close" data-dismiss="modal">
                   <span>&times;</span>
                 </button>
@@ -352,22 +348,25 @@
               <form id="formSearchByUser">
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="inputSearchByUser">User</label>
+                    <!-- <label for="inputSearchByUser">Username</label> -->
                     <input
                       type="text"
                       class="form-control"
                       id="inputSearchByUser"
-                      placeholder="Enter User"
+                      placeholder="Enter Username"
                     />
                   </div>
                 </div>
 
                 <div class="modal-footer">
-                  <input
+                  <input type="submit" value="SEARCH" class="btn btn-success" />
+                  <button
                     type="submit"
-                    value="SEARCH"
-                    class="btn btn-success btn-block"
-                  />
+                    class="btn btn-info"
+                    data-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </form>
             </div>
@@ -429,6 +428,8 @@
       integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
       crossorigin="anonymous"
     ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 
     <script src="./js/app.js"></script>
   </body>
