@@ -1,10 +1,10 @@
 // GLOBAL VARS
-const user_already_exists = "User already exists.";
-const user_does_not_exists = "User does not exist.";
+const user_already_exists = "Username already exists.";
+const user_does_not_exists = "Username does not exist.";
 const not_enough_money = "User's balance is insufficient.";
-const sender_does_not_exists = "Sender does not exists.";
-const receiver_does_not_exists = "Receiver does not exists.";
-const only_letters_allowed = "Only letters are allowed in user.";
+const sender_does_not_exists = "Sender does not exist.";
+const receiver_does_not_exists = "Receiver does not exist.";
+const only_letters_allowed = "Only letters are allowed in username.";
 const only_numbers_allowed = "Only numbers are allowed in amount.";
 const cannot_be_negative = "Amount cannot be negative.";
 
@@ -61,7 +61,7 @@ loadEventListeners();
 function loadEventListeners() {
   let users;
 
-  document.addEventListener("DOMContentLoaded", getUsers);
+  document.addEventListener("DOMContentLoaded", listUsers);
 
   formCreateUser.addEventListener("submit", function (e) {
     let username = inputCreateUsername.value;
@@ -156,7 +156,7 @@ function createUser(user, fullName, amount, e) {
 
     listUsers();
 
-    return alert(`User ${user} added.`);
+    // return alert(`User ${user} added.`);
   } else {
     e.preventDefault();
 
@@ -511,19 +511,21 @@ function showModalError(modalErrorDOM, errorMsg) {
   }, 3000);
 }
 
-// Load tasks once the page is loaded
-function getUsers() {
-  // check if there are users stored in local storage
-  if (localStorage.getItem("users") === null) {
-    // if none, set task to none
-    users = [];
-  } else {
-    // if there are users, convert it to array
-    users = JSON.parse(localStorage.getItem("users"));
-  }
+// // Load tasks once the page is loaded
+// function getUsers() {
+//   // check if there are users stored in local storage
+//   if (localStorage.getItem("users") === null) {
+//     // if none, set task to none
+//     users = [];
+//     // return `No list`;
+//     // console.log("no list");
+//   } else {
+//     // if there are users, convert it to array
+//     users = JSON.parse(localStorage.getItem("users"));
+//   }
 
-  listUsers();
-}
+//   listUsers();
+// }
 
 // Store Users array in Local Storage
 function addNewUserInLocalStorage(newUser) {
@@ -569,7 +571,8 @@ function listUsers() {
   }
 
   if (!users.length) {
-    return `No users exist.`;
+    console.log(`No users exist.`);
+    // return `No users exist.`;
   }
 
   users.forEach((user) => {
@@ -578,7 +581,7 @@ function listUsers() {
     tr.innerHTML = `
       <td class="pl-5">${user.user}</td>
       <td>${user.fullName}</td>
-      <td>${balanceFormatter(user.balance)}</td>
+      <td class="pr-5 text-right">${balanceFormatter(user.balance)}</td>
     `;
 
     userList.appendChild(tr);
