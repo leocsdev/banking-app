@@ -522,6 +522,10 @@ function listUserHistory(usersArr, index) {
   userslist.style.display = "none";
   displayUserHistory.style.display = "block";
 
+  if (document.querySelector(".user-account")) {
+    document.querySelector(".user-account").remove();
+  }
+
   displayUserHistoryData.innerHTML = "";
 
   // grab displayUserTableList
