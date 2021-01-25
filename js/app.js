@@ -69,6 +69,9 @@ loadEventListeners();
 function loadEventListeners() {
   let users;
 
+  // create array for users found
+  let fullNames;
+
   document.addEventListener("DOMContentLoaded", listUsers);
 
   formCreateUser.addEventListener("submit", function (e) {
@@ -499,6 +502,8 @@ function search(user, e) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
         $("#searchByUserModal").modal("hide");
         e.preventDefault();
+
+        inputSearchByUser.value = "";
         return listUserHistory(users, i);
       }
     } else {
@@ -545,27 +550,45 @@ function listUserHistory(usersArr, index) {
 }
 
 function searchFullName(fullName, e) {
+  // initialize fullNames Array
+  fullNames = [];
+
   for (let i = 0; i < users.length; i++) {
-    if (users[i].fullName.includes(fullName)) {
-      if (users[i].fullName.toLowerCase() == fullName.toLowerCase()) {
-        e.preventDefault();
-
-        // listUserHistory(users, i);
-
-        console.log(users[i].fullName);
-
-        // return users[i];
-
-        // console.log(users[i]);
-        // listUserHistory(users, i);
-        // return users[i];
-      }
-    } else {
-      // return user_does_not_exists;
-      e.preventDefault();
-      // return showModalError(modalErrorSearchByFullName, user_does_not_exists);
+    // if there's a match, add the user to fullNames array
+    if (users[i].fullName.toLowerCase() == fullName.toLowerCase()) {
+      fullNames.push(users[i]);
     }
   }
+
+  if (!fullNames.length) {
+    e.preventDefault();
+    return showModalError(modalErrorSearchByFullName, `No names matched.`);
+  } else {
+    $("#searchByFullNameModal").modal("hide");
+    e.preventDefault();
+    inputSearchByFullName.value = "";
+    return listUsersMatched(fullNames);
+  }
+}
+
+function listUsersMatched(fullNamesArray) {
+  userList.innerHTML = "";
+
+  for (let i = 0; i < fullNamesArray.length; i++) {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td class="pl-5">${fullNamesArray[i].user}</td>
+      <td>${fullNamesArray[i].fullName}</td>
+      <td class="pr-5 text-right">${balanceFormatter(
+        fullNamesArray[i].balance
+      )}</td>
+    `;
+
+    userList.appendChild(tr);
+  }
+
+  fullNames = [];
 }
 
 // Error Message
