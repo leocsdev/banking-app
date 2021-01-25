@@ -494,12 +494,16 @@ function search(user, e) {
   for (let i = 0; i < users.length; i++) {
     if (userExist(user)) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
+        // alert(`FROM SEARCH USERNAME`);
+
+        $("#searchByUserModal").modal("hide");
         e.preventDefault();
-        listUserHistory(users, i);
+        return listUserHistory(users, i);
       }
     } else {
       // return user_does_not_exists;
       e.preventDefault();
+
       return showModalError(modalErrorSearchByUser, user_does_not_exists);
     }
   }
