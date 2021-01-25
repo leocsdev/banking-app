@@ -1,4 +1,7 @@
 // GLOBAL VARS
+
+// ----------------------------------------------------------
+
 const user_already_exists = "Username already exists.";
 const user_does_not_exists = "Username does not exist.";
 const not_enough_money = "User's balance is insufficient.";
@@ -494,8 +497,6 @@ function search(user, e) {
   for (let i = 0; i < users.length; i++) {
     if (userExist(user)) {
       if (users[i].user.toLowerCase() == user.toLowerCase()) {
-        // alert(`FROM SEARCH USERNAME`);
-
         $("#searchByUserModal").modal("hide");
         e.preventDefault();
         return listUserHistory(users, i);
@@ -580,22 +581,6 @@ function showModalError(modalErrorDOM, errorMsg) {
   }, 3000);
 }
 
-// // Load tasks once the page is loaded
-// function getUsers() {
-//   // check if there are users stored in local storage
-//   if (localStorage.getItem("users") === null) {
-//     // if none, set task to none
-//     users = [];
-//     // return `No list`;
-//     // console.log("no list");
-//   } else {
-//     // if there are users, convert it to array
-//     users = JSON.parse(localStorage.getItem("users"));
-//   }
-
-//   listUsers();
-// }
-
 // Store Users array in Local Storage
 function addNewUserInLocalStorage(newUser) {
   // check if there are users stored in local storage
@@ -662,11 +647,3 @@ function listUsers() {
     );
   });
 }
-
-// set empty array in each user object to store the logs
-// each of the 3 main functions (withdraw, deposit, send) should have a push to the array that records the action and the computer timestamp
-// for send, both to and from account should get a log
-// push the log at the end of array, but when displaying, show the last one first by looping through it
-
-// create search users function
-// loop through all objects and return user name values then match it with the user's input

@@ -32,6 +32,16 @@ body {
   color: #23273c;
 }
 
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #fff;
+  transition: 0.2s ease-in;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -86,7 +96,7 @@ body {
   font-weight: 700;
 }
 
-.header p {
+.header .heading-content {
   font-size: 28px;
 }
 
@@ -100,6 +110,11 @@ header .row .card {
 
   background-image: linear-gradient(to right, #41dc65, #3ec3d5);
   color: #23273c;
+}
+
+header .login-error-msg {
+  font-size: 1.2rem;
+  display: none;
 }
 
 @media (max-width: 767px) {
