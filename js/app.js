@@ -522,13 +522,15 @@ function listUserHistory(usersArr, index) {
   userslist.style.display = "none";
   displayUserHistory.style.display = "block";
 
+  displayUserHistoryData.innerHTML = "";
+
   // grab displayUserTableList
   const displayUserTableList = document.getElementById("displayUserTableList");
   // create h2 element
   const h2 = document.createElement("h2");
 
   // add classes to h2
-  h2.className = "text-center my-4";
+  h2.className = "text-center my-4 user-account";
 
   // Append User's fullname to h2
   h2.appendChild(document.createTextNode(`${userFullName}'s Account`));
@@ -572,6 +574,9 @@ function searchFullName(fullName, e) {
 }
 
 function listUsersMatched(fullNamesArray) {
+  userslist.style.display = "block";
+  displayUserHistory.style.display = "none";
+
   userList.innerHTML = "";
 
   for (let i = 0; i < fullNamesArray.length; i++) {
