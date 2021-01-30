@@ -187,6 +187,11 @@ nav.topbar h1 {
   width: 250px;
   flex-shrink: 0;
   padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #admin .sidebar ul {
